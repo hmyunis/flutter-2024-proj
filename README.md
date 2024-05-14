@@ -4,7 +4,7 @@
 
 Video Game Catalogue is a comprehensive mobile application tailored for gaming enthusiasts. This project encompasses two primary features: **game management** and **review system**.
 
-The game management feature allows users to effortlessly navigate through a diverse catalog of games and add them to their personal collection. Within their collection, games can be categorized into 'Played', 'Playing', and 'Planned' sections, offering users a structured overview of their gaming interests. Users also retain the ability to remove games from their collection, ensuring flexibility and customization.
+The game management feature allows users to effortlessly navigate through a diverse catalog of games and add them to their personal collection. Within their collection, games can be categorized into 'Pinned' and 'Unpinned' sections, offering users a structured overview of their current gaming interests. Users also retain the ability to remove games from their collection, ensuring flexibility and customization.
 
 The review system is designed to facilitate detailed feedback and ratings for each game in the collection. Users can leave comprehensive reviews along with a 5-star rating system. Furthermore, they can explore reviews from other users, write their own, edit existing reviews, and delete them as needed.
 
@@ -22,11 +22,11 @@ In essence, Video Game Catalogue offers a streamlined experience for users to ma
 
 -   **Role Assignment:** The application supports role assignment functionalities, enabling owners to assign roles to users. This includes granting admin privileges to users, empowering them with additional capabilities within the application.
 
--   **Feature 1 (Game Management):** Users can browse through an extensive catalogue of games and add them to their personal collection. They can categorize games into 'Played', 'Playing', and 'Planned' sections, as well as remove games from their collection.
+-   **Feature 1 (Game Management):** Users can browse through an extensive catalogue of games and add them to their personal collection. They can categorize games into 'Pinned' and 'Unpinned' sections, as well as remove games from their collection.
 
 -   **Feature 2 (Review System):** Users can leave detailed reviews and star-based ratings for their chosen games. They have the ability to view, create, edit, and delete their reviews. Additionally, they can browse reviews from other users, fostering a community-driven feedback system.
 
-[Nest Js. Backend Server Codebase](https://github.com/hmyunis/video-game-catalogue)
+[Nest Js. Backend Server Codebase](https://github.com/hmyunis/video-game-catalogue/tree/for-mobile/backend)
 
 ## Project Members
 

@@ -1,4 +1,4 @@
-import 'package:video_game_catalogue_app/presentation/models/account.dart';
+import '../../models/account.dart';
 
 List<Account> accounts = const [
   Account(userName: "Estifanos", userType: "Admin"),

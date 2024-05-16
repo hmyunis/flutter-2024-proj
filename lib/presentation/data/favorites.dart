@@ -1,5 +1,5 @@
 import 'games.dart';
-import '../models/game.dart';
+import '../../models/game.dart';
 
 
 List<Game> favorites = [

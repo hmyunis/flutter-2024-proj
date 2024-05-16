@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/game.dart';
+import '../../models/game.dart';
 import '../screens/game_detail_page.dart';
 
 class GameItem extends StatefulWidget {

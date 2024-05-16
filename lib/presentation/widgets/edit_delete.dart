@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/game.dart';
+import '../../models/game.dart';
 
 class EditDelete extends StatelessWidget {
   const EditDelete({super.key, required this.game});

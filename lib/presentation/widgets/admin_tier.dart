@@ -28,9 +28,9 @@ class _AdminTierState extends State<AdminTier> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.lightGreen[100],
+        color: Colors.lightBlue[50],
         borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.green),
+        border: Border.all(color: Colors.blueGrey),
       ),
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.symmetric(vertical: 4.0),
@@ -41,7 +41,7 @@ class _AdminTierState extends State<AdminTier> {
             widget.userName,
             style: TextStyle(
               fontSize: 16.0,
-              color: Colors.green[800],
+              color: Colors.blue[900],
             ),
           ),
           Switch(
@@ -53,7 +53,7 @@ class _AdminTierState extends State<AdminTier> {
                 });
               }
             },
-            activeColor: Colors.green,
+            activeColor: Colors.blue,
           ),
         ],
       ),

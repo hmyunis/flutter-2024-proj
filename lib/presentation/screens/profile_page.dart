@@ -140,6 +140,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   int avatarIndex = 0;
 
@@ -147,6 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _usernameController.text = "Guest";
+    _passwordController.text = "12345678";
     _emailController.text = "guest@gmail.com";
   }
 
@@ -269,6 +271,19 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       const SizedBox(height: 10),
+                      TextField(
+                        controller: _passwordController,
+                        enabled: false,
+                        obscureText: true,
+                        style: const TextStyle(color: Colors.grey),
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          labelStyle: const TextStyle(color: Colors.grey),
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          prefixIconColor: Colors.blue[700],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
                       ButtonBar(
                         alignment: MainAxisAlignment.center,
                         children: [
@@ -296,6 +311,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     EditProfileBottomSheet(
                                   initialUsername: _usernameController.text,
                                   initialEmail: _emailController.text,
+                                  initialPassword: _passwordController.text,
                                 ),
                               );
                             },
@@ -325,11 +341,13 @@ class _ProfilePageState extends State<ProfilePage> {
 class EditProfileBottomSheet extends StatefulWidget {
   final String initialUsername;
   final String initialEmail;
+  final String initialPassword;
 
   const EditProfileBottomSheet({
     super.key,
     required this.initialUsername,
     required this.initialEmail,
+    required this.initialPassword,
   });
 
   @override
@@ -339,18 +357,21 @@ class EditProfileBottomSheet extends StatefulWidget {
 class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   late TextEditingController _usernameController;
   late TextEditingController _emailController;
+  late TextEditingController _passwordController;
 
   @override
   void initState() {
     super.initState();
     _usernameController = TextEditingController(text: widget.initialUsername);
     _emailController = TextEditingController(text: widget.initialEmail);
+    _passwordController = TextEditingController(text: widget.initialPassword);
   }
 
   @override
   void dispose() {
     _usernameController.dispose();
     _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -386,12 +407,21 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             ),
             style: const TextStyle(color: Colors.white),
           ),
+          TextField(
+            controller: _passwordController,
+            decoration: const InputDecoration(
+              labelText: 'Password',
+              labelStyle: TextStyle(color: Colors.white),
+            ),
+            style: const TextStyle(color: Colors.white),
+          ),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               // Save the edited profile details (implement your state management here)
-              String updatedUsername = _usernameController.text;
-              String updatedEmail = _emailController.text;
+              // String updatedUsername = _usernameController.text;
+              // String updatedEmail = _emailController.text;
+              // String updatedPassword = _passwordController.text;
 
               // ... Update your state management or backend ...
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/accounts.dart';
 import '../widgets/edit_delete.dart';
-import '../models/game.dart';
+import '../../models/game.dart';
 import '../widgets/comment_section.dart';
 
 class GameDetailPage extends StatefulWidget {

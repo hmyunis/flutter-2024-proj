@@ -1,4 +1,4 @@
-import '../models/game.dart';
+import '../../models/game.dart';
 
 final List<Game> games = [
   Game(
@@ -7,6 +7,9 @@ final List<Game> games = [
     title: "Minecraft",
     genre: "Strategy",
     imageUrl: 'assets/images/games/minecraft.jpg',
+    platform: "PC",
+    publisher: "Mojang",
+    releaseDate: "2011-09-03",
   ),
   Game(
     description:
@@ -14,6 +17,9 @@ final List<Game> games = [
     title: "Cyberpunk",
     genre: "Action",
     imageUrl: 'assets/images/games/cyberpunk.jpg',
+    platform: "PC",
+    publisher: "CD Projekt Red",
+    releaseDate: "2020-12-10",
   ),
   Game(
     description:
@@ -21,6 +27,9 @@ final List<Game> games = [
     title: "Tekken 8",
     genre: "Fighting",
     imageUrl: 'assets/images/games/tekken-8.jpg',
+    platform: "PS5",
+    publisher: "Bandai Namco Entertainment",
+    releaseDate: "2023-10-26",
   ),
   Game(
     description:
@@ -28,6 +37,9 @@ final List<Game> games = [
     title: "Valorant",
     genre: "RPG",
     imageUrl: 'assets/images/games/valorant.jpg',
+    platform: "PC",
+    publisher: "Riot Games",
+    releaseDate: "2020-06-02",
   ),
   Game(
     description:
@@ -35,6 +47,9 @@ final List<Game> games = [
     title: "Zelda",
     genre: "Action",
     imageUrl: 'assets/images/games/zelda.jpg',
+    platform: "Switch",
+    publisher: "Nintendo",
+    releaseDate: "1986-02-21",
   ),
   Game(
     description:
@@ -42,6 +57,9 @@ final List<Game> games = [
     title: "Apex Legends",
     genre: "RPG",
     imageUrl: 'assets/images/games/apex.jpg',
+    platform: "PC",
+    publisher: "Electronic Arts",
+    releaseDate: "2019-02-04",
   ),
   Game(
     description:
@@ -49,6 +67,9 @@ final List<Game> games = [
     title: "Mortal Kombat",
     genre: "Action",
     imageUrl: 'assets/images/games/mortal-kombat.jpg',
+    platform: "PS5",
+    publisher: "Warner Bros. Interactive Entertainment",
+    releaseDate: "2023-04-21",
   ),
   Game(
     description:
@@ -56,6 +77,9 @@ final List<Game> games = [
     title: "Bloodborne",
     genre: "Action",
     imageUrl: 'assets/images/games/bloodborne.jpg',
+    platform: "PS4",
+    publisher: "FromSoftware",
+    releaseDate: "2015-03-24",
   ),
   Game(
     description:
@@ -63,6 +87,9 @@ final List<Game> games = [
     title: "Destiny 2",
     genre: "Action",
     imageUrl: 'assets/images/games/destiny-2.jpg',
+    platform: "PC",
+    publisher: "Bungie",
+    releaseDate: "2017-09-06",
   ),
   Game(
     description:
@@ -70,6 +97,9 @@ final List<Game> games = [
     title: "Doom",
     genre: "Action",
     imageUrl: 'assets/images/games/doom.jpg',
+    platform: "PC",
+    publisher: "Bethesda Softworks",
+    releaseDate: "1993-03-03",
   ),
   Game(
     description:
@@ -77,6 +107,9 @@ final List<Game> games = [
     title: "Elvenar",
     genre: "Action",
     imageUrl: 'assets/images/games/elvenar.jpg',
+    platform: "PC",
+    publisher: "InnoGames",
+    releaseDate: "2015-04-15",
   ),
   Game(
     description:
@@ -84,6 +117,9 @@ final List<Game> games = [
     title: "Fifa 16",
     genre: "Action",
     imageUrl: 'assets/images/games/fifa-16.jpg',
+    platform: "PS4",
+    publisher: "Electronic Arts",
+    releaseDate: "2015-09-22",
   ),
   Game(
     description:
@@ -91,6 +127,9 @@ final List<Game> games = [
     title: "Fire Force",
     genre: "Action",
     imageUrl: 'assets/images/games/fire-force.jpg',
+    platform: "PC",
+    publisher: "Koei Tecmo",
+    releaseDate: "2019-09-12",
   ),
   Game(
     description:
@@ -98,6 +137,9 @@ final List<Game> games = [
     title: "Haikyuu",
     genre: "Action",
     imageUrl: 'assets/images/games/haikyu.jpg',
+    platform: "PS4",
+    publisher: "Bandai Namco Entertainment",
+    releaseDate: "2020-12-17",
   ),
   Game(
     description:
@@ -105,6 +147,9 @@ final List<Game> games = [
     title: "Harry Potter",
     genre: "Action",
     imageUrl: 'assets/images/games/harry-potter.jpg',
+    platform: 'PS4',
+    publisher: "Warner Bros. Interactive Entertainment",
+    releaseDate: "2011-09-12",
   ),
   Game(
     description:
@@ -112,5 +157,8 @@ final List<Game> games = [
     title: "My Hero",
     genre: "Action",
     imageUrl: 'assets/images/games/my-hero.jpg',
+    platform: 'Xbox One',
+    publisher: 'Bandai Namco Entertainment',
+    releaseDate: '2018-03-23',
   ),
 ];

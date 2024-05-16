@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:video_game_catalogue_app/presentation/data/reviews.dart';
-import 'package:video_game_catalogue_app/presentation/models/review.dart';
+import '../data/reviews.dart';
+import '../../models/review.dart';
 
-import '../models/game.dart';
+import '../../models/game.dart';
 
 class CommentSection extends StatefulWidget {
   const CommentSection({super.key, required this.game});

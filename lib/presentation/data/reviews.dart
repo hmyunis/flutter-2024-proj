@@ -1,4 +1,4 @@
-import '../models/review.dart';
+import '../../models/review.dart';
 
 List<Review> reviews = [
   Review(

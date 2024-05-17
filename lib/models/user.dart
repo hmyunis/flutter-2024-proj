@@ -27,6 +27,6 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, username: $username, email: $email, joinDate: $joinDate, role: $role)';
+    return 'User(id: $id, username: $username, email: $email, joinDate: $joinDate, role: $role, token: $token)';
   }
 }

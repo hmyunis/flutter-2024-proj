@@ -1,3 +1,5 @@
+import '../../logic/blocs/userSession/user_session_bloc.dart';
+
 import '../../logic/blocs/auth/auth_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else if (state is AuthSuccess) {
+          BlocProvider.of<UserSessionBloc>(context)
+              .add(UserSessionLogin(state.user));
           Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         }
       },
@@ -47,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
             body: const Center(
               child: CircularProgressIndicator(
                 color: Colors.blueGrey,
-                semanticsLabel: "Loading...",
               ),
             ),
           );

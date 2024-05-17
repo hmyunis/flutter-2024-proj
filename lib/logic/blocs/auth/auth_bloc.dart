@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-// import '../../../data/data_providers/users_data_provider.dart';
-// import '../../../data/repositories/users_repository.dart';
+import '../../../data/data_providers/users_data_provider.dart';
+import '../../../data/repositories/users_repository.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 import '../../../models/user.dart';
@@ -23,33 +25,49 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final password = event.password.trim();
 
       if (username.isEmpty || password.isEmpty) {
-        emit(AuthFailure('Username or password cannot be empty'));
+        if (username.isEmpty && password.isNotEmpty) {
+          emit(AuthFailure('Username cannot be empty.'));
+        }
+        if (password.isEmpty && username.isNotEmpty) {
+          emit(AuthFailure('Password cannot be empty.'));
+        } else {
+          emit(AuthFailure('Please fill in all of the fields.'));
+        }
         return;
       }
 
       if (username.length < 4 || password.length < 8) {
-        emit(AuthFailure('Username or password are too short.'));
+        if (username.length < 4 && password.length >= 8) {
+          emit(AuthFailure('Username must be at least 4 characters.'));
+        }
+        if (username.length >= 4 && password.length < 8) {
+          emit(AuthFailure('Password must be at least 8 characters.'));
+        }
+        if (username.length < 4 && password.length < 8) {
+          emit(AuthFailure('Username and password are too short.'));
+        }
         return;
       }
 
-      final token = await _authRepository.login(username, password);
-      // final UsersDataProvider usersDataProvider =
-      //     UsersDataProvider(token: token);
-      // final UsersRepository usersRepository =
-      //     UsersRepository(usersDataProvider);
-      // final User user = await usersRepository.getCurrentUser();
+      var token = await _authRepository.login(username, password);
+      token = jsonDecode(token);
+
+      final UsersDataProvider usersDataProvider =
+          UsersDataProvider(token: token);
+      final UsersRepository usersRepository =
+          UsersRepository(usersDataProvider);
+      final User loggedInUser = await usersRepository.getCurrentUser();
+
       emit(
-        // dummy user
         AuthSuccess(
-          user: User(
-            id: 1,
-            username: username,
-            email: "sample@gmail.com",
-            joinDate: "2023-05-06",
-            role: "user",
-            token: token,
-          ),
-        ),
+            user: User(
+          id: loggedInUser.id,
+          username: loggedInUser.username,
+          email: loggedInUser.email,
+          joinDate: loggedInUser.joinDate,
+          role: loggedInUser.role,
+          token: token,
+        )),
       );
     } catch (e) {
       return emit(AuthFailure(e.toString()));
@@ -65,13 +83,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final password = event.password.trim();
       final confirmPassword = event.confirmPassword.trim();
 
-      if (username.isEmpty || password.isEmpty || email.isEmpty) {
+      if (username.isEmpty ||
+          password.isEmpty ||
+          email.isEmpty ||
+          confirmPassword.isEmpty) {
         emit(AuthFailure('Please fill in all of the fields.'));
         return;
       }
 
-      if (username.length < 4 || password.length < 8 || email.length < 8) {
-        emit(AuthFailure('Username, email, or password are too short.'));
+      if (username.length < 4 || password.length < 8) {
+        if (username.length < 4 && password.length >= 8) {
+          emit(AuthFailure('Username must be at least 4 characters.'));
+        }
+        if (username.length >= 4 && password.length < 8) {
+          emit(AuthFailure('Password must be at least 8 characters.'));
+        }
+        if (username.length < 4 && password.length < 8) {
+          emit(AuthFailure('Username and password are too short.'));
+        }
         return;
       }
 
@@ -85,22 +114,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return;
       }
 
-      final token = await _authRepository.register(
+      var token = await _authRepository.register(
           username, email, password, confirmPassword);
-      // final UsersDataProvider usersDataProvider =
-      //    UsersDataProvider(token: token);
-      // final UsersRepository usersRepository =
-      //     UsersRepository(usersDataProvider);
-      // final User user = await usersRepository.getCurrentUser();
+      token = jsonDecode(token);
+
+      final UsersDataProvider usersDataProvider =
+          UsersDataProvider(token: token);
+      final UsersRepository usersRepository =
+          UsersRepository(usersDataProvider);
+      final User registeredUser = await usersRepository.getCurrentUser();
+
       emit(
-        // dummy user
         AuthSuccess(
           user: User(
-            id: 1,
-            username: username,
-            email: email,
-            joinDate: DateTime.now().toString(),
-            role: "user",
+            id: registeredUser.id,
+            username: registeredUser.username,
+            email: registeredUser.email,
+            joinDate: registeredUser.joinDate,
+            role: registeredUser.role,
             token: token,
           ),
         ),

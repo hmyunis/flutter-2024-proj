@@ -1,3 +1,5 @@
+import 'logic/blocs/userSession/user_session_bloc.dart';
+
 import 'data/data_providers/auth_data_provider.dart';
 import 'data/repositories/auth_repository.dart';
 
@@ -16,9 +18,7 @@ import 'presentation/screens/profile_page.dart';
 
 void main() {
   Bloc.observer = AppBlocObserver();
-  runApp(
-    const MyApp()
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -50,6 +50,9 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (context) => AuthBloc(context.read<AuthRepository>()),
           ),
+          BlocProvider(
+            create: (context) => UserSessionBloc(),
+          )
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,3 +1,7 @@
+import 'data/data_providers/games_data_provider.dart';
+import 'data/repositories/games_repository.dart';
+import 'logic/blocs/games/games_bloc.dart';
+
 import 'logic/blocs/userSession/user_session_bloc.dart';
 
 import 'data/data_providers/auth_data_provider.dart';
@@ -44,6 +48,11 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider(
           create: (context) => AuthRepository(AuthDataProvider()),
         ),
+        RepositoryProvider(
+          create: (context) => GamesRepository(
+            GamesDataProvider(),
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -52,7 +61,10 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             create: (context) => UserSessionBloc(),
-          )
+          ),
+          BlocProvider(
+            create: (context) => GamesBloc(context.read<GamesRepository>()),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

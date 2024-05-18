@@ -46,32 +46,28 @@ class _GameDetailPageState extends State<GameDetailPage> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               Column(
                 children: [
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        "Title: ",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey,
-                          letterSpacing: 1.5,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        widget.game.title,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
+                      Flexible(
+                        child: Text(
+                          widget.game.title,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: widget.game.title.length > 15 ? 20 : 30,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Row(
                     children: [
@@ -96,6 +92,75 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       ),
                     ],
                   ),
+                  Row(
+                    children: [
+                      const Text(
+                        "Platform: ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        widget.game.platform,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        "Publisher: ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        widget.game.publisher,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        "Release Date: ",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        widget.game.releaseDate,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     width: double.maxFinite,
                     child: Column(
@@ -104,7 +169,7 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Description: ",
+                          "About: ",
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.grey,

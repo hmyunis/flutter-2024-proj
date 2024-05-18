@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../models/review_temp.dart';
 import '../data/reviews.dart';
-import '../../models/review.dart';
 
 import '../../models/game.dart';
 
@@ -30,7 +30,7 @@ class _CommentSectionState extends State<CommentSection> {
 
   @override
   Widget build(BuildContext context) {
-    List<Review> filteredReviews = reviews
+    List<ReviewTemp> filteredReviews = reviews
         .where((review) => review.gameTitle == widget.game.title)
         .toList();
     return SizedBox(

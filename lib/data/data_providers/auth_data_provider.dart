@@ -24,7 +24,7 @@ class AuthDataProvider {
       _token = response.body;
       return _token!;
     } else {
-      throw Exception('Login failed');
+      throw Exception('Invalid credentials: Login failed');
     }
   }
 
@@ -48,7 +48,7 @@ class AuthDataProvider {
       _token = token;
       return token;
     } else {
-      throw Exception('Registration failed');
+      throw Exception('Registration failed. Try again.');
     }
   }
 

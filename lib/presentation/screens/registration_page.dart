@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../logic/blocs/auth/auth_bloc.dart';
+import '../../logic/blocs/games/games_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -46,6 +47,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         } else if (state is AuthSuccess) {
           BlocProvider.of<UserSessionBloc>(context)
               .add(UserSessionLogin(state.user));
+          context.read<GamesBloc>().add(GamesLoadEvent());
           Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         }
       },

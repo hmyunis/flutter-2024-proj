@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 import '../../core/constants.dart';
@@ -57,7 +59,7 @@ class UsersDataProvider {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token',
           },
-          body: user);
+          body: jsonEncode(user));
       if (response.statusCode == 200) {
         final updatedUser = response.body;
         return updatedUser;

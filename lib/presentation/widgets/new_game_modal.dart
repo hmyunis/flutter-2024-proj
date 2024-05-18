@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:video_game_catalogue_app/logic/blocs/userSession/user_session_bloc.dart';
+import '../../logic/blocs/games/games_bloc.dart';
 
 class NewGameModal extends StatefulWidget {
   const NewGameModal({super.key});
@@ -106,6 +109,23 @@ class _NewGameModalState extends State<NewGameModal> {
           const SizedBox(height: 300),
           ElevatedButton.icon(
             onPressed: () {
+              context.read<GamesBloc>().add(
+                    CreateGameEvent(
+                      title: _titleController.text,
+                      description: _descriptionController.text,
+                      genre: _genreController.text,
+                      platform: _platformController.text,
+                      publisher: _publisherController.text,
+                      releaseDate: _releaseDateController.text,
+                      imageUrl: _imageUrlController.text,
+                      token: context
+                          .read<UserSessionBloc>()
+                          .state
+                          .token
+                          .toString(),
+                    ),
+                  );
+              Future.delayed(const Duration(seconds: 2));
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(

@@ -22,8 +22,13 @@ class UsersRepository {
 
   Future<List<User>> getUsers() async {
     final users = await _usersDataProvider.getUsers();
-    return users.map((user) => User.fromJson(jsonDecode(user))).toList();
+    final allUsers = <User>[];
+    for (final user in users) {
+      allUsers.add(User.fromJson(jsonDecode(user)));
+    }
+    return allUsers;
   }
+
 
   Future<User> updateUser(String id, Map<String, dynamic> user) async {
     final data = await _usersDataProvider.updateUser(id, user);

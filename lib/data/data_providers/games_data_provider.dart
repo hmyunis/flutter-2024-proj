@@ -1,11 +1,12 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 import '../../core/constants.dart';
 
 class GamesDataProvider {
-  GamesDataProvider({required this.token});
-  final String token;
-  
+  GamesDataProvider();
+
   final _baseUrl = apiBaseUrl;
 
   Future getGames() async {
@@ -19,7 +20,7 @@ class GamesDataProvider {
     }
   }
 
-  Future getGameById(int id) async {
+  Future getGameById(String id) async {
     try {
       final response = await http.get(Uri.parse('$_baseUrl/games/$id'));
       if (response.statusCode == 200) {
@@ -42,14 +43,14 @@ class GamesDataProvider {
     }
   }
 
-  Future addGame(Map<String, dynamic> game) async {
+  Future addGame(Map<String, dynamic> game, String token) async {
     try {
       final response = await http.post(Uri.parse('$_baseUrl/games/new'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token',
           },
-          body: game);
+          body: jsonEncode(game));
       if (response.statusCode == 201) {
         return response.body;
       }
@@ -58,14 +59,15 @@ class GamesDataProvider {
     }
   }
 
-  Future updateGame(int id, Map<String, dynamic> game) async {
+  Future updateGame(Map<String, dynamic> game, String token) async {
     try {
-      final response = await http.patch(Uri.parse('$_baseUrl/games/$id'),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-          body: game);
+      final response =
+          await http.patch(Uri.parse('$_baseUrl/games/${game['id']}'),
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer $token',
+              },
+              body: jsonEncode(game));
       if (response.statusCode == 200) {
         return response.body;
       }
@@ -74,7 +76,7 @@ class GamesDataProvider {
     }
   }
 
-  Future deleteGame(int id) async {
+  Future deleteGame(String id, String token) async {
     try {
       final response =
           await http.delete(Uri.parse('$_baseUrl/games/$id'), headers: {

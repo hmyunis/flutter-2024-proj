@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../data/accounts.dart';
-import '../widgets/new_game_modal.dart';
 import 'browse_page.dart';
 import 'favorites_page.dart';
 import 'profile_page.dart';
@@ -140,8 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.blueGrey[900],
             items: [
               BottomNavigationBarItem(
-                icon: const Icon(Icons.home),
-                label: 'Home',
+                icon: const Icon(Icons.explore),
+                label: 'Explore',
                 backgroundColor: _selectedIndex == 0
                     ? Colors.blueGrey[800]
                     : Colors.transparent,
@@ -167,28 +164,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      floatingActionButton: (accounts[0].userType == "Owner" ||
-                  accounts[0].userType == "Admin") &&
-              (_selectedIndex == 0)
-          ? Builder(builder: (context) {
-              return FloatingActionButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      constraints: const BoxConstraints(maxHeight: 600),
-                      backgroundColor: Colors.blueGrey[800],
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(25),
-                        ),
-                      ),
-                      builder: (context) => const NewGameModal(),
-                    );
-                  },
-                  child: const Icon(Icons.add));
-            })
-          : null,
       backgroundColor: Colors.blueGrey[700],
       body: _pages[_selectedIndex],
     );

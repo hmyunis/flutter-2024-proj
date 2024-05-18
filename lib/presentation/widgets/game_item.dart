@@ -55,6 +55,8 @@ class _GameItemState extends State<GameItem> {
                 padding: const EdgeInsets.all(5),
                 child: Text(
                   widget.game.title,
+                  overflow: TextOverflow.fade,
+                  maxLines: 1,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,

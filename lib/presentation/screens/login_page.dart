@@ -1,3 +1,4 @@
+import '../../logic/blocs/games/games_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
 
 import '../../logic/blocs/auth/auth_bloc.dart';
@@ -41,6 +42,8 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is AuthSuccess) {
           BlocProvider.of<UserSessionBloc>(context)
               .add(UserSessionLogin(state.user));
+          context.read<GamesBloc>().add(GamesLoadEvent());
+
           Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         }
       },

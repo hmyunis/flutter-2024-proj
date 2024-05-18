@@ -1,4 +1,5 @@
 class Game {
+  final int? id;
   final String title;
   final String description;
   final String genre;
@@ -8,6 +9,7 @@ class Game {
   final String imageUrl;
 
   Game({
+    this.id,
     required this.title,
     required this.description,
     required this.genre,
@@ -19,6 +21,7 @@ class Game {
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
+      id: json['id'],
       title: json['title'],
       description: json['description'],
       genre: json['genre'],
@@ -31,6 +34,6 @@ class Game {
 
   @override
   String toString() {
-    return 'Game{title: $title, description: $description, genre: $genre, platform: $platform, publisher: $publisher, releaseDate: $releaseDate, imageUrl: $imageUrl}';
+    return 'Game{id: $id, title: $title, description: $description, genre: $genre, platform: $platform, publisher: $publisher, releaseDate: $releaseDate, imageUrl: $imageUrl';
   }
 }

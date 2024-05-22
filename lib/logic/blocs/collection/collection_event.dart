@@ -3,7 +3,11 @@ part of 'collection_bloc.dart';
 @immutable
 sealed class CollectionEvent {}
 
-class FetchCollection extends CollectionEvent {}
+class FetchCollection extends CollectionEvent {
+  final String token;
+
+  FetchCollection(this.token);
+}
 
 class AddToCollection extends CollectionEvent {
   final Game game;
@@ -13,20 +17,23 @@ class AddToCollection extends CollectionEvent {
 
 class RemoveFromCollection extends CollectionEvent {
   final Game game;
+  final int userId;
 
-  RemoveFromCollection(this.game);
+  RemoveFromCollection(this.game, this.userId);
 }
 
 class PinGameInCollection extends CollectionEvent {
   final Game game;
+  final int userId;
 
-  PinGameInCollection(this.game);
+  PinGameInCollection(this.game, this.userId);
 }
 
 class UnpinGameInCollection extends CollectionEvent {
   final Game game;
+  final int userId;
 
-  UnpinGameInCollection(this.game);
+  UnpinGameInCollection(this.game, this.userId);
 }
 
 class ClearCollection extends CollectionEvent {}

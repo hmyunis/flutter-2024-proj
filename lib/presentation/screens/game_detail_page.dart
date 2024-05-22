@@ -58,7 +58,7 @@ class _GameDetailPageState extends State<GameDetailPage> {
                           widget.game.title,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: widget.game.title.length > 15 ? 20 : 30,
+                            fontSize: widget.game.title.length > 20 ? 24 : 32,
                             fontWeight: FontWeight.w300,
                             color: Colors.white,
                           ),
@@ -92,6 +92,9 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
                       const Text(
@@ -106,14 +109,19 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       const SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        widget.game.platform,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
+                      Flexible(
+                        child: Text(
+                          widget.game.platform,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 5,
                   ),
                   Row(
                     children: [
@@ -129,14 +137,19 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       const SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        widget.game.publisher,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
+                      Flexible(
+                        child: Text(
+                          widget.game.publisher,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 5,
                   ),
                   Row(
                     children: [
@@ -169,7 +182,7 @@ class _GameDetailPageState extends State<GameDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "About: ",
+                          "Description: ",
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.grey,

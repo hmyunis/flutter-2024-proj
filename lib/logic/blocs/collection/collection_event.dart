@@ -17,8 +17,9 @@ class AddToCollection extends CollectionEvent {
 
 class RemoveFromCollection extends CollectionEvent {
   final Game game;
+  final int userId;
 
-  RemoveFromCollection(this.game);
+  RemoveFromCollection(this.game, this.userId);
 }
 
 class PinGameInCollection extends CollectionEvent {

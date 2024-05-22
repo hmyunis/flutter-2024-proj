@@ -22,6 +22,12 @@ final class GamePinnedSuccess extends CollectionState {
   GamePinnedSuccess(this.title);
 }
 
+final class GameRemovedSuccess extends CollectionState {
+  final String title;
+
+  GameRemovedSuccess(this.title);
+}
+
 final class CollectionError extends CollectionState {
   final String message;
 

@@ -116,6 +116,40 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   ),
                 );
               }
+              if (state is GameRemovedSuccess) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Row(
+                      children: [
+                        const Icon(
+                          Icons.delete_rounded,
+                          size: 32.0,
+                          color: Colors.red,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Flexible(
+                          child: Text(
+                            'You removed ${state.title} from favorites.',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    backgroundColor: Colors.red[300]?.withOpacity(0.5),
+                    behavior: SnackBarBehavior.floating,
+                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                );
+              }
             },
             builder: (context, state) {
               if (state is CollectionLoading) {
@@ -139,7 +173,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         height: 20,
                       ),
                       Text(
-                        "You have no favorites yet!",
+                        "You have no favorites...",
                         style: TextStyle(
                           fontSize: 24.0,
                           color: Colors.grey.withOpacity(0.5),
@@ -156,7 +190,19 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           key: Key(allGames[index].title),
                           onDismissed: (direction) {
                             if (direction == DismissDirection.endToStart) {
-                              removeFavorite(allGames[index]);
+                              context.read<CollectionBloc>().add(
+                                  RemoveFromCollection(
+                                      allGames[index],
+                                      context
+                                          .read<UserSessionBloc>()
+                                          .state
+                                          .id!));
+                              allGames.remove(allGames[index]);
+                              context.read<CollectionBloc>().add(
+                                  FetchCollection(context
+                                      .read<UserSessionBloc>()
+                                      .state
+                                      .token!));
                             } else if (direction ==
                                 DismissDirection.startToEnd) {
                               final userId =

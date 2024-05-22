@@ -20,6 +20,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<FetchCollection>(_onFetchCollection);
     on<PinGameInCollection>(_onPinGameInCollection);
     on<UnpinGameInCollection>(_onUnpinGameInCollection);
+    on<RemoveFromCollection>(_onRemoveFromCollection);
   }
 
   Future<void> _onFetchCollection(
@@ -129,6 +130,31 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
         ),
       );
       emit(GamePinnedSuccess(event.game.title));
+      return;
+    } catch (e) {
+      emit(CollectionError(e.toString()));
+    }
+  }
+
+  Future<void> _onRemoveFromCollection(
+      RemoveFromCollection event, Emitter<CollectionState> emit) async {
+    emit(CollectionLoading());
+    try {
+      final List<Collection> collections =
+          await _collectionsRepository.getCollections();
+      final col = collections
+          .where((collection) =>
+              collection.userId == event.userId &&
+              collection.gameId == event.game.id)
+          .toList();
+      if (col.isEmpty) {
+        emit(CollectionError("Collection not found"));
+        return;
+      }
+      final collectionId = col[0].id;
+
+      await _collectionsRepository.deleteCollection(collectionId!);
+      emit(GameRemovedSuccess(event.game.title));
       return;
     } catch (e) {
       emit(CollectionError(e.toString()));

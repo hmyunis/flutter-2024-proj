@@ -1,3 +1,4 @@
+import '../../logic/blocs/collection/collection_bloc.dart';
 import '../../logic/blocs/games/games_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
 
@@ -43,6 +44,10 @@ class _LoginPageState extends State<LoginPage> {
           BlocProvider.of<UserSessionBloc>(context)
               .add(UserSessionLogin(state.user));
           context.read<GamesBloc>().add(GamesLoadEvent());
+          
+          context
+              .read<CollectionBloc>()
+              .add(FetchCollection(state.user.token!));
 
           Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         }
@@ -167,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextButton(
                             onPressed: () {
+                              context.read<GamesBloc>().add(GamesLoadEvent());
                               Navigator.pushNamedAndRemoveUntil(
                                   context, "/home", (route) => false);
                             },

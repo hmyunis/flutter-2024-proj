@@ -1,6 +1,6 @@
 class Collection {
   final int? id;
-  final GameStatus status;
+  final String status;
   final int gameId;
   final int userId;
 
@@ -24,5 +24,3 @@ class Collection {
     return 'Collection(id: $id, status: $status, gameId: $gameId, userId: $userId)';
   }
 }
-
-enum GameStatus { pinned, unpinned }

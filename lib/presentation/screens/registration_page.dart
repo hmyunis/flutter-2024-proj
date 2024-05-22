@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../logic/blocs/auth/auth_bloc.dart';
+import '../../logic/blocs/collection/collection_bloc.dart';
 import '../../logic/blocs/games/games_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
 
@@ -48,6 +49,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
           BlocProvider.of<UserSessionBloc>(context)
               .add(UserSessionLogin(state.user));
           context.read<GamesBloc>().add(GamesLoadEvent());
+          
+          context
+              .read<CollectionBloc>()
+              .add(FetchCollection(state.user.token!));
+              
           Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         }
       },
@@ -208,6 +214,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),
                             TextButton(
                               onPressed: () {
+                                context.read<GamesBloc>().add(GamesLoadEvent());
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, "/home", (route) => false);
                               },

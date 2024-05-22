@@ -24,11 +24,11 @@ class CollectionsRepository {
     return Collection.fromJson(collection);
   }
 
-  Future<List<String>> getGameIdsByStatus(int userId, status) async {
+  Future<List<int>> getGameIdsByStatus(int userId, String status) async {
     final response = await _collectionsDataProvider.getGameIdsByStatus(
         userId.toString(), status);
     final gameIds = jsonDecode(response);
-    final allGameIds = <String>[];
+    final allGameIds = <int>[];
     for (final gameId in gameIds) {
       allGameIds.add(gameId);
     }

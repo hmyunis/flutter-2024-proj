@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../logic/blocs/collection/collection_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
 import '../../logic/blocs/games/games_bloc.dart';
 import '../widgets/games_list.dart';
@@ -88,16 +89,26 @@ class BrowsePage extends StatelessWidget {
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: const Text(
-                          "Database sync successful!",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                          ),
+                        content: const Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle_rounded,
+                              color: Colors.green,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Database sync successful!",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
+                            )
+                          ],
                         ),
-                        backgroundColor: Colors.green.withOpacity(0.5),
+                        backgroundColor: Colors.blueGrey.withOpacity(0.5),
                         behavior: SnackBarBehavior.floating,
-                        showCloseIcon: true,
                         margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
@@ -123,6 +134,11 @@ class BrowsePage extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {
                                 context.read<GamesBloc>().add(GamesLoadEvent());
+                                context.read<CollectionBloc>().add(
+                                    FetchCollection(context
+                                        .read<UserSessionBloc>()
+                                        .state
+                                        .token!));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blueAccent[900],
@@ -131,7 +147,7 @@ class BrowsePage extends StatelessWidget {
                                 padding: const EdgeInsets.all(16.0),
                               ),
                               child: const Icon(
-                                Icons.refresh,
+                                Icons.sync,
                                 size: 28,
                               ),
                             ),
@@ -142,23 +158,32 @@ class BrowsePage extends StatelessWidget {
                   }
                   if (state is GameProcessingSuccess) {
                     context.read<GamesBloc>().add(GamesLoadEvent());
+                    context.read<CollectionBloc>().add(FetchCollection(
+                        context.read<UserSessionBloc>().state.token!));
                   }
                   if (state is GamesLoaded) {
                     return Stack(
                       children: [
                         state.games.isEmpty
-                            ? const Center(
+                            ? Center(
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(
                                       Icons.description_outlined,
+                                      color: Colors.grey.withOpacity(0.5),
                                       size: 100,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 20,
                                     ),
-                                    Text("No Games"),
+                                    Text(
+                                      "No game found",
+                                      style: TextStyle(
+                                        fontSize: 24.0,
+                                        color: Colors.grey.withOpacity(0.5),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               )
@@ -169,6 +194,11 @@ class BrowsePage extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {
                               context.read<GamesBloc>().add(GamesLoadEvent());
+                              context.read<CollectionBloc>().add(
+                                  FetchCollection(context
+                                      .read<UserSessionBloc>()
+                                      .state
+                                      .token!));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueAccent[900],
@@ -177,7 +207,7 @@ class BrowsePage extends StatelessWidget {
                               padding: const EdgeInsets.all(16.0),
                             ),
                             child: const Icon(
-                              Icons.refresh,
+                              Icons.sync,
                               size: 28,
                             ),
                           ),
@@ -205,6 +235,11 @@ class BrowsePage extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {
                                 context.read<GamesBloc>().add(GamesLoadEvent());
+                                context.read<CollectionBloc>().add(
+                                    FetchCollection(context
+                                        .read<UserSessionBloc>()
+                                        .state
+                                        .token!));
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blueAccent[900],
@@ -213,7 +248,7 @@ class BrowsePage extends StatelessWidget {
                                 padding: const EdgeInsets.all(16.0),
                               ),
                               child: const Icon(
-                                Icons.refresh,
+                                Icons.sync,
                                 size: 28,
                               ),
                             ),
@@ -231,6 +266,11 @@ class BrowsePage extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {
                               context.read<GamesBloc>().add(GamesLoadEvent());
+                              context.read<CollectionBloc>().add(
+                                  FetchCollection(context
+                                      .read<UserSessionBloc>()
+                                      .state
+                                      .token!));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueAccent[900],
@@ -239,7 +279,7 @@ class BrowsePage extends StatelessWidget {
                               padding: const EdgeInsets.all(16.0),
                             ),
                             child: const Icon(
-                              Icons.refresh,
+                              Icons.sync,
                               size: 28,
                             ),
                           ),

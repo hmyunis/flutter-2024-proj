@@ -32,8 +32,12 @@ class CollectionsDataProvider {
     }
   }
 
-  Future getGameIdsByStatus(String userId, GameStatus status) async {
+  Future getGameIdsByStatus(String userId, String status) async {
     try {
+      if (!(status.toLowerCase().trim() == "pinned" ||
+          status.toLowerCase().trim() == "unpinned")) {
+        throw Exception("Invalid game status");
+      }
       final response = await http.get(Uri.parse(
           "$_baseUrl/collections/user/$userId?status=${status.toString().toUpperCase()}"));
       if (response.statusCode == 200) {
@@ -48,7 +52,8 @@ class CollectionsDataProvider {
   Future addCollection(Map<String, dynamic> collection) async {
     try {
       final response = await http.post(Uri.parse("$_baseUrl/collections/new"),
-          headers: {'Content-Type': 'application/json'}, body: jsonEncode(collection));
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(collection));
       if (response.statusCode == 200) {
         return response.body;
       }
@@ -87,5 +92,3 @@ class CollectionsDataProvider {
     }
   }
 }
-
-enum GameStatus { pinned, unpinned }

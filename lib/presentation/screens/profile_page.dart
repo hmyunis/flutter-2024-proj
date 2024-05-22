@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../logic/blocs/userSession/user_session_bloc.dart';
 import '../data/accounts.dart';
 import '../widgets/administrators.dart';
 import '../data/avatars.dart';
@@ -147,9 +149,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _usernameController.text = "Guest";
-    _passwordController.text = "12345678";
-    _emailController.text = "guest@gmail.com";
+    _usernameController.text = context.read<UserSessionBloc>().state.username;
+    _passwordController.text = "";
+    _emailController.text = context.read<UserSessionBloc>().state.email;
   }
 
   @override
@@ -219,9 +221,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Guest',
-                    style: TextStyle(
+                  Text(
+                    context.read<UserSessionBloc>().state.username,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -230,9 +232,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 30),
                   Column(
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Text(
+                          const Text(
                             "Join date: ",
                             style: TextStyle(
                               color: Colors.grey,
@@ -241,8 +243,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           Text(
-                            "2023-03-08",
-                            style: TextStyle(color: Colors.white),
+                            context.read<UserSessionBloc>().state.joinDate,
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ],
                       ),

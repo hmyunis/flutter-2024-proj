@@ -9,17 +9,11 @@ class FetchCollection extends CollectionEvent {
   FetchCollection(this.token);
 }
 
-class AddToCollection extends CollectionEvent {
-  final Game game;
-
-  AddToCollection(this.game);
-}
-
-class RemoveFromCollection extends CollectionEvent {
+class RemoveGameFromCollection extends CollectionEvent {
   final Game game;
   final int userId;
 
-  RemoveFromCollection(this.game, this.userId);
+  RemoveGameFromCollection(this.game, this.userId);
 }
 
 class PinGameInCollection extends CollectionEvent {

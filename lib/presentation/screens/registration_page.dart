@@ -48,12 +48,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
         } else if (state is AuthSuccess) {
           BlocProvider.of<UserSessionBloc>(context)
               .add(UserSessionLogin(state.user));
-          context.read<GamesBloc>().add(GamesLoadEvent());
-          
+          context.read<GamesBloc>().add(GamesLoadEvent(state.user.id));
+
           context
               .read<CollectionBloc>()
               .add(FetchCollection(state.user.token!));
-              
+
           Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         }
       },
@@ -214,7 +214,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                context.read<GamesBloc>().add(GamesLoadEvent());
+                                context.read<GamesBloc>().add(GamesLoadEvent(
+                                    context.read<UserSessionBloc>().state.id));
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, "/home", (route) => false);
                               },

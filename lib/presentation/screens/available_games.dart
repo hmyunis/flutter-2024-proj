@@ -14,7 +14,7 @@ class AvailableGames extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.blueGrey[900],
       ),
-      body: GamesList(games),
+      body: GamesList(games, const []),
     );
   }
 }

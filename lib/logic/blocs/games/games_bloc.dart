@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import '../../../data/data_providers/collections_data_provider.dart';
+import '../../../data/repositories/collections_repository.dart';
 
 import '../../../data/repositories/games_repository.dart';
+import '../../../models/collection.dart';
 import '../../../models/game.dart';
 
 part 'games_event.dart';
@@ -15,13 +18,33 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     on<CreateGameEvent>(_onGameCreationEvent);
     on<UpdateGameEvent>(_onGameUpdateEvent);
     on<DeleteGameEvent>(_onGameDeleteEvent);
+    on<AddGameToCollection>(_onAddGameToCollection);
+    on<RemoveAGameFromCollection>(_onRemoveAGameFromCollection);
   }
 
   void _onGamesLoadEvent(GamesLoadEvent event, Emitter<GamesState> emit) async {
     emit(GamesLoading());
     try {
+      if (event.userId == null) {
+        throw Exception("Please log in first.");
+      }
+      final CollectionsDataProvider collectionsDataProvider =
+          CollectionsDataProvider();
+      final CollectionsRepository collectionsRepository =
+          CollectionsRepository(collectionsDataProvider);
+      final List<Collection> collections =
+          await collectionsRepository.getCollections();
+      final List<Collection> usersCollection = collections
+          .where((collection) => collection.userId == event.userId)
+          .toList();
+      final List<int> userFavoriteGameIds = <int>[];
+      for (final collection in usersCollection) {
+        userFavoriteGameIds.add(collection.gameId);
+      }
+
       final games = await _gamesRepository.getGames();
-      emit(GamesLoaded(games));
+
+      emit(GamesLoaded(games, userFavoriteGameIds));
       return;
     } catch (e) {
       emit(GameLoadError(e.toString()));
@@ -119,7 +142,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       DeleteGameEvent event, Emitter<GamesState> emit) async {
     emit(GameProcessing());
     try {
-      if (event.game.id == null){
+      if (event.game.id == null) {
         emit(GameProcessingError("Game ID is required"));
         return;
       }
@@ -129,6 +152,57 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     } catch (e) {
       emit(GameProcessingError(e.toString()));
       return;
+    }
+  }
+
+  void _onAddGameToCollection(
+      AddGameToCollection event, Emitter<GamesState> emit) async {
+    emit(GamesLoading());
+    try {
+      final CollectionsDataProvider collectionsDataProvider =
+          CollectionsDataProvider();
+      final CollectionsRepository collectionsRepository =
+          CollectionsRepository(collectionsDataProvider);
+      await collectionsRepository.addCollection(
+        Collection(
+          status: "UNPINNED",
+          gameId: event.game.id!,
+          userId: event.userId,
+        ),
+      );
+      emit(GameToCollectionAddSuccess(event.game.title));
+      return;
+    } catch (e) {
+      emit(GameLoadError(e.toString()));
+    }
+  }
+
+  void _onRemoveAGameFromCollection(
+      RemoveAGameFromCollection event, Emitter<GamesState> emit) async {
+    emit(GamesLoading());
+    try {
+      final CollectionsDataProvider collectionsDataProvider =
+          CollectionsDataProvider();
+      final CollectionsRepository collectionsRepository =
+          CollectionsRepository(collectionsDataProvider);
+      final List<Collection> collections =
+          await collectionsRepository.getCollections();
+      final col = collections
+          .where((collection) =>
+              collection.userId == event.userId &&
+              collection.gameId == event.game.id)
+          .toList();
+      if (col.isEmpty) {
+        emit(GameLoadError("Collection not found"));
+        return;
+      }
+      final collectionId = col[0].id;
+
+      await collectionsRepository.deleteCollection(collectionId!);
+      emit(GameFromCollectionRemoveSuccess(event.game.title));
+      return;
+    } catch (e) {
+      emit(GameLoadError(e.toString()));
     }
   }
 }

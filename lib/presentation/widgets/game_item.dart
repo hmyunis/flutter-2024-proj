@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../logic/blocs/games/games_bloc.dart';
+import '../../logic/blocs/userSession/user_session_bloc.dart';
 import '../../models/game.dart';
 import '../screens/game_detail_page.dart';
 
 class GameItem extends StatefulWidget {
-  const GameItem(this.game, {super.key});
+  const GameItem(this.game, this.isStarred, {super.key});
 
   final Game game;
+  final bool isStarred;
 
   @override
   State<GameItem> createState() => _GameItemState();
 }
 
 class _GameItemState extends State<GameItem> {
-  final Map<String, Icon> _favorites =
-      {}; // Map to store favorite games, title: Icon()
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -70,19 +71,19 @@ class _GameItemState extends State<GameItem> {
               right: 0,
               child: IconButton(
                 onPressed: () {
-                  setState(() {
-                    if (_favorites.containsKey(widget.game.title)) {
-                      _favorites.remove(widget.game.title);
-                    } else {
-                      _favorites[widget.game.title] = const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      );
-                    }
-                  });
+                  if (widget.isStarred) {
+                    context.read<GamesBloc>().add(RemoveAGameFromCollection(
+                        widget.game,
+                        context.read<UserSessionBloc>().state.id!));
+                  } else {
+                    context.read<GamesBloc>().add(
+                          AddGameToCollection(widget.game,
+                              context.read<UserSessionBloc>().state.id!),
+                        );
+                  }
                 },
-                icon: (_favorites.containsKey(widget.game.title))
-                    ? _favorites[widget.game.title]!
+                icon: widget.isStarred
+                    ? const Icon(Icons.star, color: Colors.amber)
                     : const Icon(Icons.star_border, color: Colors.amber),
                 padding: const EdgeInsets.all(5),
                 alignment: Alignment.topRight,

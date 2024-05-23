@@ -54,7 +54,7 @@ class CollectionsDataProvider {
       final response = await http.post(Uri.parse("$_baseUrl/collections/new"),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(collection));
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response.body;
       }
       throw Exception('Failed to create collection item');

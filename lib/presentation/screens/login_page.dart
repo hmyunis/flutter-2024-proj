@@ -43,8 +43,8 @@ class _LoginPageState extends State<LoginPage> {
         } else if (state is AuthSuccess) {
           BlocProvider.of<UserSessionBloc>(context)
               .add(UserSessionLogin(state.user));
-          context.read<GamesBloc>().add(GamesLoadEvent());
-          
+          context.read<GamesBloc>().add(GamesLoadEvent(state.user.id));
+
           context
               .read<CollectionBloc>()
               .add(FetchCollection(state.user.token!));
@@ -172,7 +172,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextButton(
                             onPressed: () {
-                              context.read<GamesBloc>().add(GamesLoadEvent());
+                              context.read<GamesBloc>().add(GamesLoadEvent(
+                                  context.read<UserSessionBloc>().state.id));
                               Navigator.pushNamedAndRemoveUntil(
                                   context, "/home", (route) => false);
                             },

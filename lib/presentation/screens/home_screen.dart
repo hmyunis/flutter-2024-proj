@@ -137,16 +137,16 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.blueGrey[900],
             items: [
               BottomNavigationBarItem(
-                icon: const Icon(Icons.explore),
+                icon: const Icon(Icons.explore_rounded),
                 label: 'Explore',
                 backgroundColor: _selectedIndex == 0
                     ? Colors.blueGrey[800]
                     : Colors.transparent,
               ),
               BottomNavigationBarItem(
-                icon: const Icon(
-                  Icons.star_outlined,
-                  color: Colors.amber,
+                icon: Icon(
+                  Icons.star_rounded,
+                  color: Colors.amber[300],
                 ),
                 label: 'Favorites',
                 backgroundColor: _selectedIndex == 1
@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : Colors.transparent,
               ),
               BottomNavigationBarItem(
-                icon: const Icon(Icons.person),
+                icon: const Icon(Icons.person_rounded),
                 label: 'Profile',
                 backgroundColor: _selectedIndex == 2
                     ? Colors.blueGrey[800]

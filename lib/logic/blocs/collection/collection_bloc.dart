@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:video_game_catalogue_app/data/data_providers/games_data_provider.dart';
+import '../../../data/data_providers/games_data_provider.dart';
 
 import '../../../data/data_providers/users_data_provider.dart';
 import '../../../data/repositories/collections_repository.dart';
@@ -20,7 +20,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<FetchCollection>(_onFetchCollection);
     on<PinGameInCollection>(_onPinGameInCollection);
     on<UnpinGameInCollection>(_onUnpinGameInCollection);
-    on<RemoveFromCollection>(_onRemoveFromCollection);
+    on<RemoveGameFromCollection>(_onRemoveFromCollection);
   }
 
   Future<void> _onFetchCollection(
@@ -137,7 +137,7 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
   }
 
   Future<void> _onRemoveFromCollection(
-      RemoveFromCollection event, Emitter<CollectionState> emit) async {
+      RemoveGameFromCollection event, Emitter<CollectionState> emit) async {
     emit(CollectionLoading());
     try {
       final List<Collection> collections =

@@ -86,7 +86,6 @@ class BrowsePage extends StatelessWidget {
                     );
                   }
                   if (state is GamesLoaded) {
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: const Row(
@@ -107,9 +106,80 @@ class BrowsePage extends StatelessWidget {
                             )
                           ],
                         ),
+                        duration: const Duration(
+                          seconds: 1,
+                        ),
                         backgroundColor: Colors.blueGrey.withOpacity(0.5),
                         behavior: SnackBarBehavior.floating,
                         margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    );
+                  }
+                  if (state is GameToCollectionAddSuccess) {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            const Icon(
+                              Icons.star_rounded,
+                              size: 32.0,
+                              color: Colors.amber,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Flexible(
+                              child: Text(
+                                '${state.title} is added to favorites.',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        backgroundColor: Colors.blueGrey.withOpacity(0.7),
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    );
+                  }
+                  if (state is GameFromCollectionRemoveSuccess) {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            const Icon(
+                              Icons.star_outline_rounded,
+                              size: 32.0,
+                              color: Colors.amber,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Flexible(
+                              child: Text(
+                                '${state.title} is removed from favorites.',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        backgroundColor: Colors.blueGrey.withOpacity(0.7),
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -133,7 +203,8 @@ class BrowsePage extends StatelessWidget {
                             right: 12.0,
                             child: ElevatedButton(
                               onPressed: () {
-                                context.read<GamesBloc>().add(GamesLoadEvent());
+                                context.read<GamesBloc>().add(GamesLoadEvent(
+                                    context.read<UserSessionBloc>().state.id));
                                 context.read<CollectionBloc>().add(
                                     FetchCollection(context
                                         .read<UserSessionBloc>()
@@ -157,7 +228,15 @@ class BrowsePage extends StatelessWidget {
                     );
                   }
                   if (state is GameProcessingSuccess) {
-                    context.read<GamesBloc>().add(GamesLoadEvent());
+                    context.read<GamesBloc>().add(GamesLoadEvent(
+                        context.read<UserSessionBloc>().state.id));
+                    context.read<CollectionBloc>().add(FetchCollection(
+                        context.read<UserSessionBloc>().state.token!));
+                  }
+                  if (state is GameToCollectionAddSuccess ||
+                      state is GameFromCollectionRemoveSuccess) {
+                    context.read<GamesBloc>().add(GamesLoadEvent(
+                        context.read<UserSessionBloc>().state.id));
                     context.read<CollectionBloc>().add(FetchCollection(
                         context.read<UserSessionBloc>().state.token!));
                   }
@@ -187,13 +266,14 @@ class BrowsePage extends StatelessWidget {
                                   ],
                                 ),
                               )
-                            : GamesList(state.games),
+                            : GamesList(state.games, state.favoriteGames),
                         Positioned(
                           bottom: 5,
                           right: 12.0,
                           child: ElevatedButton(
                             onPressed: () {
-                              context.read<GamesBloc>().add(GamesLoadEvent());
+                              context.read<GamesBloc>().add(GamesLoadEvent(
+                                  context.read<UserSessionBloc>().state.id));
                               context.read<CollectionBloc>().add(
                                   FetchCollection(context
                                       .read<UserSessionBloc>()
@@ -234,7 +314,8 @@ class BrowsePage extends StatelessWidget {
                             right: 12.0,
                             child: ElevatedButton(
                               onPressed: () {
-                                context.read<GamesBloc>().add(GamesLoadEvent());
+                                context.read<GamesBloc>().add(GamesLoadEvent(
+                                    context.read<UserSessionBloc>().state.id));
                                 context.read<CollectionBloc>().add(
                                     FetchCollection(context
                                         .read<UserSessionBloc>()
@@ -265,7 +346,8 @@ class BrowsePage extends StatelessWidget {
                           right: 12.0,
                           child: ElevatedButton(
                             onPressed: () {
-                              context.read<GamesBloc>().add(GamesLoadEvent());
+                              context.read<GamesBloc>().add(GamesLoadEvent(
+                                  context.read<UserSessionBloc>().state.id));
                               context.read<CollectionBloc>().add(
                                   FetchCollection(context
                                       .read<UserSessionBloc>()

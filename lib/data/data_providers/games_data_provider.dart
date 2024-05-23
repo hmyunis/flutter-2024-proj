@@ -51,7 +51,7 @@ class GamesDataProvider {
             'Authorization': 'Bearer $token',
           },
           body: jsonEncode(game));
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response.body;
       }
     } catch (e) {

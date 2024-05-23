@@ -3,7 +3,11 @@ part of 'games_bloc.dart';
 @immutable
 sealed class GamesEvent {}
 
-class GamesLoadEvent extends GamesEvent {}
+class GamesLoadEvent extends GamesEvent {
+  final int? userId;
+
+  GamesLoadEvent(this.userId);
+}
 
 class CreateGameEvent extends GamesEvent {
   final String title;
@@ -57,4 +61,18 @@ class DeleteGameEvent extends GamesEvent {
     required this.game,
     required this.token,
   });
+}
+
+class AddGameToCollection extends GamesEvent {
+  final Game game;
+  final int userId;
+
+  AddGameToCollection(this.game, this.userId);
+}
+
+class RemoveAGameFromCollection extends GamesEvent {
+  final Game game;
+  final int userId;
+
+  RemoveAGameFromCollection(this.game, this.userId);
 }

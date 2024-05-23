@@ -11,8 +11,9 @@ final class GameProcessing extends GamesState {}
 
 final class GamesLoaded extends GamesState {
   final List<Game> games;
+  final List<int> favoriteGames;
 
-  GamesLoaded(this.games);
+  GamesLoaded(this.games, this.favoriteGames);
 }
 
 final class GameLoadError extends GamesState {
@@ -32,3 +33,16 @@ final class GameProcessingError extends GamesState {
 
   GameProcessingError(this.error);
 }
+
+final class GameToCollectionAddSuccess extends GamesState {
+  final String title;
+
+  GameToCollectionAddSuccess(this.title);
+}
+
+final class GameFromCollectionRemoveSuccess extends GamesState {
+  final String title;
+
+  GameFromCollectionRemoveSuccess(this.title);
+}
+

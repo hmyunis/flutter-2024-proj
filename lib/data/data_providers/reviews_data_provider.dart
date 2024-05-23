@@ -47,8 +47,9 @@ class ReviewsDataProvider {
   Future addReview(Map<String, dynamic> review) async {
     try {
       final response = await http.post(Uri.parse("$_baseUrl/reviews/new"),
-          headers: {'Content-Type': 'application/json'}, body: jsonEncode(review));
-      if (response.statusCode == 200) {
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(review));
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return response.body;
       }
       throw Exception('Failed to create review item');

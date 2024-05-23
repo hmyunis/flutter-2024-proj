@@ -191,7 +191,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                           onDismissed: (direction) {
                             if (direction == DismissDirection.endToStart) {
                               context.read<CollectionBloc>().add(
-                                  RemoveFromCollection(
+                                  RemoveGameFromCollection(
                                       allGames[index],
                                       context
                                           .read<UserSessionBloc>()
@@ -258,7 +258,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      Icons.satellite_alt_outlined,
+                      Icons.timer_outlined,
                       color: Colors.grey.withOpacity(0.5),
                       size: 100,
                     ),
@@ -266,7 +266,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       height: 20,
                     ),
                     Text(
-                      "Unknown error, please try again",
+                      "Please wait...",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 20.0,

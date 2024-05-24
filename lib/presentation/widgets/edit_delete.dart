@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../logic/blocs/games/games_bloc.dart';
+import '../../logic/blocs/userSession/user_session_bloc.dart';
 import '../../models/game.dart';
+import 'edit_game_modal.dart';
 
 class EditDelete extends StatelessWidget {
   const EditDelete({super.key, required this.game});
@@ -22,7 +26,7 @@ class EditDelete extends StatelessWidget {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      constraints: const BoxConstraints(maxHeight: 600),
+                      constraints: const BoxConstraints(maxHeight: 680),
                       backgroundColor: Colors.blueGrey[800],
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
@@ -47,7 +51,12 @@ class EditDelete extends StatelessWidget {
                 width: double.infinity,
                 height: 40,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<GamesBloc>().add(DeleteGameEvent(
+                        game: game,
+                        token: context.read<UserSessionBloc>().state.token!));
+                    Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red[700],
                     foregroundColor: Colors.white,
@@ -63,106 +72,6 @@ class EditDelete extends StatelessWidget {
         ),
         const SizedBox(height: 15),
       ],
-    );
-  }
-}
-
-class EditGameBottomSheet extends StatefulWidget {
-  const EditGameBottomSheet({super.key, required this.game});
-  final Game game;
-
-  @override
-  State<EditGameBottomSheet> createState() => _EditGameBottomSheetState();
-}
-
-class _EditGameBottomSheetState extends State<EditGameBottomSheet> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _imageUrlController = TextEditingController();
-  final TextEditingController _genreController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _titleController.text = widget.game.title;
-    _imageUrlController.text = widget.game.imageUrl;
-    _genreController.text = widget.game.genre;
-    _descriptionController.text = widget.game.description;
-  }
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _imageUrlController.dispose();
-    _genreController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.blueGrey[800],
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16.0),
-          topRight: Radius.circular(16.0),
-        ),
-      ),
-      child: ListView(
-        children: [
-          const Text(
-            'Edit Game Details',
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'Title',
-              labelStyle: TextStyle(color: Colors.white),
-            ),
-            style: const TextStyle(color: Colors.grey),
-          ),
-          TextField(
-            controller: _imageUrlController,
-            decoration: const InputDecoration(
-              labelText: 'Image URL',
-              labelStyle: TextStyle(color: Colors.white),
-            ),
-            style: const TextStyle(color: Colors.grey),
-          ),
-          TextField(
-            controller: _genreController,
-            decoration: const InputDecoration(
-              labelText: 'Genre',
-              labelStyle: TextStyle(color: Colors.white),
-            ),
-            style: const TextStyle(color: Colors.grey),
-          ),
-          TextField(
-            controller: _descriptionController,
-            decoration: const InputDecoration(
-              labelText: 'Description',
-              labelStyle: TextStyle(color: Colors.white),
-            ),
-            maxLines: 3,
-            style: const TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-            ),
-            child: const Text('Save Changes',
-                style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
     );
   }
 }

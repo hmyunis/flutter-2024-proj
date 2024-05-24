@@ -43,6 +43,7 @@ class GamesRepository {
 
   Future<void> updateGame(Game game, String token) async {
     await _gamesDataProvider.updateGame({
+      'id': game.id,
       'title': game.title,
       'description': game.description,
       'genre': game.genre,

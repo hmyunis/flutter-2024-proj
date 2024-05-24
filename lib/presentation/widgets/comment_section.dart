@@ -34,7 +34,7 @@ class _CommentSectionState extends State<CommentSection> {
         .where((review) => review.gameTitle == widget.game.title)
         .toList();
     return SizedBox(
-      width: 200,
+      // width: 200,
       height: 500,
       child: Column(
         children: [

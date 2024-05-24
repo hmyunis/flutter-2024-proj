@@ -227,7 +227,9 @@ class BrowsePage extends StatelessWidget {
                       ),
                     );
                   }
-                  if (state is GameProcessingSuccess) {
+                  if (state is GameCreationSuccess ||
+                      state is GameDeleteSuccess ||
+                      state is GameUpdateSuccess) {
                     context.read<GamesBloc>().add(GamesLoadEvent(
                         context.read<UserSessionBloc>().state.id));
                     context.read<CollectionBloc>().add(FetchCollection(
@@ -338,6 +340,10 @@ class BrowsePage extends StatelessWidget {
                       ),
                     );
                   } else {
+                    context.read<UserSessionBloc>().state.id == null
+                        ? null
+                        : context.read<GamesBloc>().add(GamesLoadEvent(
+                            context.read<UserSessionBloc>().state.id));
                     return Stack(
                       children: [
                         Container(),

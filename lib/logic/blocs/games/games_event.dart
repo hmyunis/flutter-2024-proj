@@ -32,6 +32,7 @@ class CreateGameEvent extends GamesEvent {
 }
 
 class UpdateGameEvent extends GamesEvent {
+  final int id;
   final String title;
   final String description;
   final String genre;
@@ -42,6 +43,7 @@ class UpdateGameEvent extends GamesEvent {
   final String token;
 
   UpdateGameEvent({
+    required this.id,
     required this.title,
     required this.description,
     required this.genre,

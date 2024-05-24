@@ -7,8 +7,6 @@ final class GamesInitial extends GamesState {}
 
 final class GamesLoading extends GamesState {}
 
-final class GameProcessing extends GamesState {}
-
 final class GamesLoaded extends GamesState {
   final List<Game> games;
   final List<int> favoriteGames;
@@ -22,10 +20,22 @@ final class GameLoadError extends GamesState {
   GameLoadError(this.error);
 }
 
-final class GameProcessingSuccess extends GamesState {
+final class GameCreationSuccess extends GamesState {
   final Game game;
 
-  GameProcessingSuccess(this.game);
+  GameCreationSuccess(this.game);
+}
+
+final class GameUpdateSuccess extends GamesState {
+  final Game game;
+
+  GameUpdateSuccess(this.game);
+}
+
+final class GameDeleteSuccess extends GamesState {
+  final Game game;
+
+  GameDeleteSuccess(this.game);
 }
 
 final class GameProcessingError extends GamesState {

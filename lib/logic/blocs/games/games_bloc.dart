@@ -54,7 +54,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
 
   void _onGameCreationEvent(
       CreateGameEvent event, Emitter<GamesState> emit) async {
-    emit(GameProcessing());
+    emit(GamesLoading());
     try {
       final String title = event.title;
       final String description = event.description;
@@ -87,17 +87,17 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       );
 
       await _gamesRepository.createGame(game, token);
-      emit(GameProcessingSuccess(game));
+      emit(GameCreationSuccess(game));
       return;
     } catch (e) {
-      emit(GameProcessingError(e.toString()));
+      emit(GameProcessingError("Game creation failed."));
       return;
     }
   }
 
   void _onGameUpdateEvent(
       UpdateGameEvent event, Emitter<GamesState> emit) async {
-    emit(GameProcessing());
+    emit(GamesLoading());
     try {
       final String title = event.title;
       final String description = event.description;
@@ -120,6 +120,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       }
 
       final Game game = Game(
+        id: event.id,
         title: title,
         description: description,
         genre: genre,
@@ -130,27 +131,27 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       );
 
       await _gamesRepository.updateGame(game, token);
-      emit(GameProcessingSuccess(game));
+      emit(GameUpdateSuccess(game));
       return;
     } catch (e) {
-      emit(GameProcessingError(e.toString()));
+      emit(GameProcessingError("Game update failed."));
       return;
     }
   }
 
   void _onGameDeleteEvent(
       DeleteGameEvent event, Emitter<GamesState> emit) async {
-    emit(GameProcessing());
+    emit(GamesLoading());
     try {
       if (event.game.id == null) {
         emit(GameProcessingError("Game ID is required"));
         return;
       }
       await _gamesRepository.deleteGame(event.game.id!, event.token);
-      emit(GameProcessingSuccess(event.game));
+      emit(GameDeleteSuccess(event.game));
       return;
     } catch (e) {
-      emit(GameProcessingError(e.toString()));
+      emit(GameProcessingError("Game deletion failed."));
       return;
     }
   }

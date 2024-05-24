@@ -1,28 +1,29 @@
-import 'data/data_providers/collections_data_provider.dart';
-import 'data/repositories/collections_repository.dart';
-import 'logic/blocs/collection/collection_bloc.dart';
-
-import 'data/data_providers/games_data_provider.dart';
-import 'data/repositories/games_repository.dart';
-import 'logic/blocs/games/games_bloc.dart';
-
-import 'logic/blocs/userSession/user_session_bloc.dart';
-
-import 'data/data_providers/auth_data_provider.dart';
-import 'data/repositories/auth_repository.dart';
-
-import 'logic/blocs/auth/auth_bloc.dart';
-import 'logic/utils/bloc_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'presentation/screens/home_screen.dart';
-import 'presentation/screens/available_games.dart';
-import 'presentation/screens/login_page.dart';
-import 'presentation/screens/registration_page.dart';
+
+import 'data/data_providers/auth_data_provider.dart';
+import 'data/data_providers/collections_data_provider.dart';
+import 'data/data_providers/games_data_provider.dart';
+import 'data/data_providers/users_data_provider.dart';
+import 'data/repositories/auth_repository.dart';
+import 'data/repositories/collections_repository.dart';
+import 'data/repositories/games_repository.dart';
+import 'data/repositories/users_repository.dart';
+import 'logic/blocs/auth/auth_bloc.dart';
+import 'logic/blocs/collection/collection_bloc.dart';
+import 'logic/blocs/games/games_bloc.dart';
+import 'logic/blocs/user/user_bloc.dart';
+import 'logic/blocs/userSession/user_session_bloc.dart';
+import 'logic/utils/bloc_observer.dart';
 import 'presentation/screens/about_page.dart';
+import 'presentation/screens/available_games.dart';
 import 'presentation/screens/browse_page.dart';
 import 'presentation/screens/favorites_page.dart';
-import 'presentation/screens/profile_page.dart';
+import 'presentation/screens/home_screen.dart';
+import 'presentation/screens/login_page.dart';
+import 'presentation/screens/profile_screen.dart';
+import 'presentation/screens/registration_page.dart';
+import 'presentation/screens/role_mgt_screen.dart';
 
 void main() {
   Bloc.observer = AppBlocObserver();
@@ -58,6 +59,9 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider(
           create: (context) => CollectionsRepository(CollectionsDataProvider()),
         ),
+        RepositoryProvider(
+          create: (context) => UsersRepository(UsersDataProvider()),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -73,6 +77,9 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (context) =>
                 CollectionBloc(context.read<CollectionsRepository>()),
+          ),
+          BlocProvider(
+            create: (context) => UserBloc(context.read<UsersRepository>()),
           ),
         ],
         child: MaterialApp(
@@ -91,9 +98,10 @@ class _MyAppState extends State<MyApp> {
             '/home': (context) => HomeScreen(_isNightMode, _toggleNightMode),
             '/browse': (context) => const BrowsePage(),
             '/favorites': (context) => const FavoritesPage(),
-            '/profile': (context) => const ProfilePage(),
+            '/profile': (context) => const ProfileScreen(),
             '/allgames': (context) => const AvailableGames(),
             '/about': (context) => const AboutPage(),
+            '/rolemgt': (context) => const RoleMgtScreen(),
           },
           home: HomeScreen(_isNightMode, _toggleNightMode),
         ),

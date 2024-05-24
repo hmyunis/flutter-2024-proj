@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../logic/blocs/collection/collection_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
-import '../data/favorites.dart';
-import '../../models/game.dart';
 import '../widgets/favorite_item.dart';
 
 class FavoritesPage extends StatefulWidget {
@@ -14,44 +12,6 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  void removeFavorite(Game game) {
-    setState(() {
-      favorites.remove(game);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '${game.title} has been removed from your favorites.',
-                  overflow: TextOverflow.visible,
-                ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              TextButton(
-                onPressed: () {
-                  if (favorites.contains(game) == false) {
-                    setState(() {
-                      favorites.add(game);
-                    });
-                  }
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                ),
-                child: const Text('UNDO'),
-              )
-            ],
-          ),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(

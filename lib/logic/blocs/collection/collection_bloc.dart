@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import '../../../data/data_providers/games_data_provider.dart';
 
+import '../../../data/data_providers/games_data_provider.dart';
 import '../../../data/data_providers/users_data_provider.dart';
 import '../../../data/repositories/collections_repository.dart';
 import '../../../data/repositories/games_repository.dart';
@@ -28,10 +28,10 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     emit(CollectionLoading());
     try {
       final UsersDataProvider usersDataProvider =
-          UsersDataProvider(token: event.token);
+          UsersDataProvider();
       final UsersRepository usersRepository =
           UsersRepository(usersDataProvider);
-      final User loggedInUser = await usersRepository.getCurrentUser();
+      final User loggedInUser = await usersRepository.getCurrentUser(event.token);
 
       final userId = loggedInUser.id ?? 0;
       final List<int> unpinnedGameIds =

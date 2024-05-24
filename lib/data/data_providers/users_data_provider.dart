@@ -5,12 +5,11 @@ import 'package:http/http.dart' as http;
 import '../../core/constants.dart';
 
 class UsersDataProvider {
-  UsersDataProvider({required this.token});
-  final String token;
+  UsersDataProvider();
 
   final _baseUrl = apiBaseUrl;
 
-  Future getCurrentUser() async {
+  Future getCurrentUser(String token) async {
     try {
       final response =
           await http.get(Uri.parse('$_baseUrl/users/whoami'), headers: {
@@ -27,10 +26,7 @@ class UsersDataProvider {
 
   Future getUserById(String id) async {
     try {
-      final response =
-          await http.get(Uri.parse('$_baseUrl/users/$id'), headers: {
-        'Authorization': 'Bearer $token',
-      });
+      final response = await http.get(Uri.parse('$_baseUrl/users/$id'));
       if (response.statusCode == 200) {
         final user = response.body;
         return user;
@@ -57,7 +53,6 @@ class UsersDataProvider {
       final response = await http.patch(Uri.parse('$_baseUrl/users/$id'),
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
           },
           body: jsonEncode(user));
       if (response.statusCode == 200) {
@@ -71,10 +66,7 @@ class UsersDataProvider {
 
   Future deleteUser(String id) async {
     try {
-      final response =
-          await http.delete(Uri.parse('$_baseUrl/users/$id'), headers: {
-        'Authorization': 'Bearer $token',
-      });
+      final response = await http.delete(Uri.parse('$_baseUrl/users/$id'));
       if (response.statusCode == 200) {
         return response.body;
       }
@@ -83,15 +75,16 @@ class UsersDataProvider {
     }
   }
 
-  Future toggleAdmin(String id) async {
+  Future toggleAdmin(String id, String token) async {
     try {
-      final response = await http.patch(Uri.parse('$_baseUrl/toggleadmin/$id'),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-          );
-      if (response.statusCode == 200) {
+      final response = await http.patch(
+        Uri.parse('$_baseUrl/users/toggleadmin/$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final updatedUser = response.body;
         return updatedUser;
       }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:http/http.dart';
 import '../../../data/data_providers/users_data_provider.dart';
 import '../../../data/repositories/users_repository.dart';
 import '../../../data/repositories/auth_repository.dart';
@@ -52,11 +53,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       var token = await _authRepository.login(username, password);
       token = jsonDecode(token);
 
-      final UsersDataProvider usersDataProvider =
-          UsersDataProvider(token: token);
+      final UsersDataProvider usersDataProvider = UsersDataProvider();
       final UsersRepository usersRepository =
           UsersRepository(usersDataProvider);
-      final User loggedInUser = await usersRepository.getCurrentUser();
+      final User loggedInUser = await usersRepository.getCurrentUser(token);
 
       emit(
         AuthSuccess(
@@ -69,6 +69,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           token: token,
         )),
       );
+    } on ClientException {
+      return emit(AuthFailure("Please connect to the API server first."));
     } catch (e) {
       return emit(AuthFailure(e.toString()));
     }
@@ -118,11 +120,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           username, email, password, confirmPassword);
       token = jsonDecode(token);
 
-      final UsersDataProvider usersDataProvider =
-          UsersDataProvider(token: token);
+      final UsersDataProvider usersDataProvider = UsersDataProvider();
       final UsersRepository usersRepository =
           UsersRepository(usersDataProvider);
-      final User registeredUser = await usersRepository.getCurrentUser();
+      final User registeredUser = await usersRepository.getCurrentUser(token);
 
       emit(
         AuthSuccess(
@@ -136,18 +137,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         ),
       );
+    } on ClientException {
+      return emit(AuthFailure("Please connect to the API server first."));
     } catch (e) {
       return emit(AuthFailure(e.toString()));
     }
   }
 
   String isValidEmail(email) {
-    // Check if the email is not null and not empty
     if (email == null || email.isEmpty) {
       return 'Email cannot be null or empty.';
     }
 
-    // Define the regular expression pattern for email validation
+    // Regular expression pattern for email validation
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
     // Check if the email matches the regular expression pattern
@@ -155,7 +157,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return 'Email address is not in the correct format.';
     }
 
-    // Split the email into username and domain parts
     final emailParts = email.split('@');
     final username = emailParts[0];
     final domain = emailParts[1];

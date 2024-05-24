@@ -8,40 +8,52 @@ class UsersRepository {
   final UsersDataProvider _usersDataProvider;
   UsersRepository(this._usersDataProvider);
 
-  Future<User> getCurrentUser() async {
-    var user = await _usersDataProvider.getCurrentUser();
+  Future<User> getCurrentUser(String token) async {
+    var user = await _usersDataProvider.getCurrentUser(token);
     user = jsonDecode(user);
-    final userId = user['id'].toString();
+    final userId = user['id'] as int;
     return await getUserById(userId);
   }
 
-  Future<User> getUserById(String id) async {
-    final user = await _usersDataProvider.getUserById(id);
+  Future<User> getUserById(int userId) async {
+    final user = await _usersDataProvider.getUserById(userId.toString());
     return User.fromJson(jsonDecode(user));
   }
 
   Future<List<User>> getUsers() async {
-    final users = await _usersDataProvider.getUsers();
+    final response = await _usersDataProvider.getUsers();
+    final users = jsonDecode(response);
     final allUsers = <User>[];
     for (final user in users) {
-      allUsers.add(User.fromJson(jsonDecode(user)));
+      allUsers.add(User.fromJson(user));
     }
     return allUsers;
   }
 
-
-  Future<User> updateUser(String id, Map<String, dynamic> user) async {
-    final data = await _usersDataProvider.updateUser(id, user);
-    return User.fromJson(jsonDecode(data));
+  Future<User> updateUser(User user, String? newPassword) async {
+    final String updatedUser;
+    if (newPassword == null || newPassword.trim() == '') {
+      updatedUser = await _usersDataProvider.updateUser(user.id.toString(), {
+        "username": user.username,
+        "email": user.email,
+      });
+    } else {
+      updatedUser = await _usersDataProvider.updateUser(user.id.toString(), {
+        "username": user.username,
+        "email": user.email,
+        "password": newPassword,
+      });
+    }
+    return User.fromJson(jsonDecode(updatedUser));
   }
 
-  Future deleteUser(String id) async {
-    final user = await _usersDataProvider.deleteUser(id);
+  Future deleteUser(int userId) async {
+    final user = await _usersDataProvider.deleteUser(userId.toString());
     return User.fromJson(jsonDecode(user));
   }
 
-  Future toggleAdmin(String id) async {
-    final user = await _usersDataProvider.toggleAdmin(id);
+  Future<User> toggleAdmin(int userId, String token) async {
+    final user = await _usersDataProvider.toggleAdmin(userId.toString(), token);
     return User.fromJson(jsonDecode(user));
   }
 }

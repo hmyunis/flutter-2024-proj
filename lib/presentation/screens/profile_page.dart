@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
-import '../data/accounts.dart';
-import '../widgets/administrators.dart';
 import '../data/avatars.dart';
 import '../widgets/avatar_picker_dialog.dart';
 
@@ -133,14 +131,14 @@ class EditGameBottomSheet extends StatelessWidget {
   }
 }
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePageSS extends StatefulWidget {
+  const ProfilePageSS({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePageSS> createState() => _ProfilePageSSState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageSSState extends State<ProfilePageSS> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -331,9 +329,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          (accounts[0].userType == "Owner" || accounts[0].userType == "Admin")
-              ? const AdminContainer()
-              : const SizedBox(),
+          // (accounts[0].userType == "Owner" || accounts[0].userType == "Admin")
+          //     ? const AdminContainer()
+          //     : const SizedBox(),
         ],
       ),
     );

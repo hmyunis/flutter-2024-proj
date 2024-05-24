@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'browse_page.dart';
 import 'favorites_page.dart';
-import 'profile_page.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen(this.isNightMode, this.toggleNightMode, {super.key});
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List _pages = [
     const BrowsePage(),
     const FavoritesPage(),
-    const ProfilePage(),
+    const ProfileScreen(),
   ];
 
   @override

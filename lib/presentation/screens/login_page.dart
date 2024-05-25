@@ -153,8 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text('Submit'),
                       ),
                       const SizedBox(height: 10),
-                      ButtonBar(
-                        alignment: MainAxisAlignment.spaceBetween,
+                      Row(
                         children: [
                           TextButton(
                             onPressed: () {
@@ -166,22 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Colors.blueGrey[200],
-                                fontWeight: FontWeight.w200,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              context.read<GamesBloc>().add(GamesLoadEvent(
-                                  context.read<UserSessionBloc>().state.id));
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, "/home", (route) => false);
-                            },
-                            child: Text(
-                              'Sign in as guest',
-                              style: TextStyle(
-                                color: Colors.blueGrey[200],
-                                fontWeight: FontWeight.w200,
+                                fontWeight: FontWeight.w300,
                               ),
                             ),
                           ),

@@ -195,8 +195,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                       const SizedBox(height: 10),
                       Flexible(
-                        child: ButtonBar(
-                          alignment: MainAxisAlignment.spaceBetween,
+                        child: Row(
                           children: [
                             TextButton(
                               onPressed: () {
@@ -208,22 +207,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   color: Colors.blueGrey[200],
-                                  fontWeight: FontWeight.w200,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context.read<GamesBloc>().add(GamesLoadEvent(
-                                    context.read<UserSessionBloc>().state.id));
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, "/home", (route) => false);
-                              },
-                              child: Text(
-                                'Sign in as guest',
-                                style: TextStyle(
-                                  color: Colors.blueGrey[200],
-                                  fontWeight: FontWeight.w200,
+                                  fontWeight: FontWeight.w300,
                                 ),
                               ),
                             ),

@@ -1,8 +1,8 @@
 class Review {
   final int? id;
-  final String userId;
-  final String gameId;
-  final String comment;
+  final int userId;
+  final int gameId;
+  final String? comment;
   final int rating;
   final String? createdAt;
 
@@ -10,7 +10,7 @@ class Review {
     this.id,
     required this.userId,
     required this.gameId,
-    required this.comment,
+    this.comment,
     required this.rating,
     this.createdAt,
   });

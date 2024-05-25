@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../logic/blocs/review/review_bloc.dart';
 import '../../logic/blocs/games/games_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
 import '../../models/game.dart';
@@ -20,6 +21,10 @@ class _GameItemState extends State<GameItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        context.read<ReviewBloc>().add(LoadGameReviews(
+              widget.game,
+              context.read<UserSessionBloc>().state.id!,
+            ));
         Navigator.push(
           context,
           MaterialPageRoute(

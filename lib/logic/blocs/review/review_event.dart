@@ -4,26 +4,39 @@ part of 'review_bloc.dart';
 sealed class ReviewEvent {}
 
 final class LoadGameReviews extends ReviewEvent {
-  final List<Review> reviews;
+  final Game game;
+  final int userId;
 
-  LoadGameReviews(this.reviews);
+  LoadGameReviews(this.game, this.userId);
 }
 
-final class AddGameReview extends ReviewEvent {
+final class AddGameRatingReview extends ReviewEvent {
   final Review review;
 
-  AddGameReview(this.review);
+  AddGameRatingReview(this.review);
 }
 
-final class UpdateGameReview extends ReviewEvent {
+final class UpdateGameRating extends ReviewEvent {
   final Review review;
-  final int reviewId;
 
-  UpdateGameReview(this.review, this.reviewId);
+  UpdateGameRating(this.review);
 }
 
-final class DeleteGameReview extends ReviewEvent {
+final class AddGameCommentReview extends ReviewEvent {
   final Review review;
 
-  DeleteGameReview(this.review);
+  AddGameCommentReview(this.review);
+}
+
+final class UpdateGameCommentReview extends ReviewEvent {
+  final Review review;
+  final String newComment;
+
+  UpdateGameCommentReview(this.review, this.newComment);
+}
+
+final class DeleteGameCommentReview extends ReviewEvent {
+  final Review review;
+
+  DeleteGameCommentReview(this.review);
 }

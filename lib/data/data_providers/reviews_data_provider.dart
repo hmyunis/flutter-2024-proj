@@ -61,7 +61,7 @@ class ReviewsDataProvider {
   Future updateReview(String reviewId, Map<String, dynamic> review) async {
     try {
       final response = await http.patch(
-          Uri.parse("$_baseUrl/collections/$reviewId"),
+          Uri.parse("$_baseUrl/reviews/$reviewId"),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(review));
       if (response.statusCode == 200) {
@@ -80,7 +80,7 @@ class ReviewsDataProvider {
       if (response.statusCode == 200) {
         return response.body;
       }
-      throw Exception('Failed to delete collection');
+      throw Exception('Failed to delete review');
     } catch (e) {
       throw e.toString();
     }

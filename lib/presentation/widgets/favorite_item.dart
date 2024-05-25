@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../logic/blocs/review/review_bloc.dart';
+import '../../logic/blocs/userSession/user_session_bloc.dart';
 import '../../models/game.dart';
 import '../screens/game_detail_page.dart';
 
@@ -45,6 +48,10 @@ class FavoriteItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(2),
           child: Image.asset(game.imageUrl)),
       onTap: () {
+        context.read<ReviewBloc>().add(LoadGameReviews(
+              game,
+              context.read<UserSessionBloc>().state.id!,
+            ));
         Navigator.push(
           context,
           MaterialPageRoute(

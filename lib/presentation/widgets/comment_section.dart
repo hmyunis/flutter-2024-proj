@@ -15,6 +15,141 @@ class CommentSection extends StatefulWidget {
 }
 
 class _CommentSectionState extends State<CommentSection> {
+  final TextEditingController _commentController = TextEditingController();
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _showCommentEditDialog(Review review) async {
+    bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        _commentController.text = review.comment!;
+        return AlertDialog(
+          title: const Text('Edit comment'),
+          content: SizedBox(
+            width: 400,
+            child: TextField(
+              controller: _commentController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+                prefixIcon: Icon(Icons.edit),
+              ),
+              autocorrect: true,
+              maxLines: null,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.blueGrey[100],
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (!mounted) return;
+
+    if (_commentController.text.trim() == "" ||
+        confirmed == false ||
+        confirmed == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.amber,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                "Comment update aborted.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18.0,
+                ),
+              )
+            ],
+          ),
+          backgroundColor: Colors.blueGrey.withOpacity(0.5),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+        ),
+      );
+      return;
+    }
+
+    if (confirmed) {
+      context.read<ReviewBloc>().add(UpdateGameCommentReview(
+            Review(
+              userId: review.userId,
+              gameId: review.gameId,
+              comment: review.comment,
+              rating: 0,
+            ),
+            _commentController.text,
+          ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                "Comment updated successfully.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18.0,
+                ),
+              )
+            ],
+          ),
+          duration: const Duration(seconds: 1),
+          backgroundColor: Colors.blueGrey.withOpacity(0.5),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -62,7 +197,7 @@ class _CommentSectionState extends State<CommentSection> {
                               ),
                               const Flexible(
                                 child: Text(
-                                  "You can only delete your own comment.",
+                                  "You can only delete your own comments.",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 18.0,
@@ -79,8 +214,10 @@ class _CommentSectionState extends State<CommentSection> {
                           ),
                         ),
                       );
+                      setState(() {
+                        widget.reviews.insert(index, widget.reviews[index]);
+                      });
                     }
-                    Navigator.pop(context);
                   },
                   background: Container(
                     color: Colors.red,
@@ -92,80 +229,89 @@ class _CommentSectionState extends State<CommentSection> {
                     ),
                   ),
                   direction: DismissDirection.endToStart,
-                  child: ListTile(
-                    tileColor: (context.read<UserSessionBloc>().state.id ==
-                            widget.reviews[index].userId)
-                        ? Colors.grey[100]
-                        : Colors.blueGrey[100],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      side:
-                          const BorderSide(color: Colors.blueGrey, width: 1.5),
-                    ),
-                    contentPadding: const EdgeInsets.all(10),
-                    leading: Icon(
-                      Icons.account_circle,
-                      size: 40,
-                      color: (context.read<UserSessionBloc>().state.id ==
+                  child: GestureDetector(
+                    onTap: () {
+                      if (context.read<UserSessionBloc>().state.id ==
+                          widget.reviews[index].userId) {
+                        _showCommentEditDialog(widget.reviews[index]);
+                      }
+                    },
+                    child: ListTile(
+                      tileColor: (context.read<UserSessionBloc>().state.id ==
                               widget.reviews[index].userId)
-                          ? Colors.cyan[700]
-                          : Colors.blueGrey,
-                    ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "user id: ${widget.reviews[index].userId}",
-                          style: TextStyle(
-                            fontSize: 18,
-                            letterSpacing: 2.0,
-                            color: (context.read<UserSessionBloc>().state.id ==
-                                    widget.reviews[index].userId)
-                                ? Colors.cyan[800]
-                                : Colors.blueGrey,
+                          ? Colors.grey[100]
+                          : Colors.blueGrey[100],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        side: const BorderSide(
+                            color: Colors.blueGrey, width: 1.5),
+                      ),
+                      contentPadding: const EdgeInsets.all(10),
+                      leading: Icon(
+                        Icons.account_circle,
+                        size: 40,
+                        color: (context.read<UserSessionBloc>().state.id ==
+                                widget.reviews[index].userId)
+                            ? Colors.cyan[700]
+                            : Colors.blueGrey,
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "user id: ${widget.reviews[index].userId}",
+                            style: TextStyle(
+                              fontSize: 18,
+                              letterSpacing: 2.0,
+                              color:
+                                  (context.read<UserSessionBloc>().state.id ==
+                                          widget.reviews[index].userId)
+                                      ? Colors.cyan[800]
+                                      : Colors.blueGrey,
+                            ),
                           ),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              widget.reviews[index].createdAt
-                                  .toString()
-                                  .substring(
-                                      0,
-                                      widget.reviews[index].createdAt
-                                          .toString()
-                                          .indexOf(",")),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            Text(
-                              " |${widget.reviews[index].createdAt.toString().substring(
-                                    widget.reviews[index].createdAt
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                widget.reviews[index].createdAt
+                                    .toString()
+                                    .substring(
+                                        0,
+                                        widget.reviews[index].createdAt
                                             .toString()
-                                            .indexOf(",") +
-                                        1,
-                                  )}",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.blue,
+                                            .indexOf(",")),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.blue,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              Text(
+                                " |${widget.reviews[index].createdAt.toString().substring(
+                                      widget.reviews[index].createdAt
+                                              .toString()
+                                              .indexOf(",") +
+                                          1,
+                                    )}",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      subtitle: Text(widget.reviews[index].comment!,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.blueGrey[900],
+                          )),
                     ),
-                    subtitle: Text(widget.reviews[index].comment!,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.blueGrey[900],
-                        )),
                   ),
                 );
               },

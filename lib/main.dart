@@ -19,7 +19,6 @@ import 'logic/blocs/user/user_bloc.dart';
 import 'logic/blocs/userSession/user_session_bloc.dart';
 import 'logic/utils/bloc_observer.dart';
 import 'presentation/screens/about_page.dart';
-import 'presentation/screens/available_games.dart';
 import 'presentation/screens/browse_page.dart';
 import 'presentation/screens/favorites_page.dart';
 import 'presentation/screens/home_screen.dart';
@@ -108,7 +107,6 @@ class _MyAppState extends State<MyApp> {
             '/browse': (context) => const BrowsePage(),
             '/favorites': (context) => const FavoritesPage(),
             '/profile': (context) => const ProfileScreen(),
-            '/allgames': (context) => const AvailableGames(),
             '/about': (context) => const AboutPage(),
             '/rolemgt': (context) => const RoleMgtScreen(),
           },

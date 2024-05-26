@@ -9,21 +9,55 @@ final class ReviewLoading extends ReviewState {}
 
 final class ReviewsLoaded extends ReviewState {
   final List<Review> reviews;
+  final int userLastRating;
+  final double averageRating;
+  final int numComments;
 
-  ReviewsLoaded(this.reviews);
+  ReviewsLoaded(
+      {required this.reviews,
+      required this.userLastRating,
+      required this.averageRating,
+      required this.numComments});
 }
 
-final class ReviewAddSuccess extends ReviewState {}
+final class ReviewRatingAddSuccess extends ReviewState {
+  final Review review;
 
-final class ReviewUpdateSuccess extends ReviewState {}
+  ReviewRatingAddSuccess(this.review);
+}
 
-final class ReviewDeleteSuccess extends ReviewState {}
+final class ReviewRatingUpdateSuccess extends ReviewState {
+  final String message;
 
-final class ReviewEmpty extends ReviewState {}
+  ReviewRatingUpdateSuccess(this.message);
+}
+
+final class ReviewCommentAddSuccess extends ReviewState {
+  final String message;
+
+  ReviewCommentAddSuccess(this.message);
+}
+
+final class ReviewCommentUpdateSuccess extends ReviewState {
+  final String message;
+
+  ReviewCommentUpdateSuccess(this.message);
+}
+
+final class ReviewCommentDeleteSuccess extends ReviewState {
+  final String message;
+
+  ReviewCommentDeleteSuccess(this.message);
+}
+
+final class ReviewEmpty extends ReviewState {
+  final Game game;
+
+  ReviewEmpty(this.game);
+}
 
 final class ReviewError extends ReviewState {
   final String message;
 
   ReviewError(this.message);
 }
-

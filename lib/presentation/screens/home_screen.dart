@@ -72,14 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ]),
               ),
               ListTile(
-                leading: const Icon(Icons.fitbit_outlined),
-                title: const Text("G A M E S"),
-                onTap: () {
-                  Navigator.pushNamed(context, '/allgames');
-                },
-              ),
-              const Divider(),
-              ListTile(
                 leading: const Icon(Icons.dark_mode),
                 title: const Text("N I G H T  M O D E"),
                 trailing: Switch(

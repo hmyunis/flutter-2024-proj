@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../../data/data_providers/users_data_provider.dart';
 import '../../../data/repositories/reviews_repository.dart';
+import '../../../data/repositories/users_repository.dart';
 import '../../../models/game.dart';
 import '../../../models/review.dart';
 
@@ -65,8 +67,18 @@ class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
         throw Exception();
       }
 
+      final userIdToUsernameMap = <int, String>{};
+      final UsersDataProvider usersDataProvider = UsersDataProvider();
+      final UsersRepository usersRepository =
+          UsersRepository(usersDataProvider);
+      final users = await usersRepository.getUsers();
+      for (var user in users) {
+        userIdToUsernameMap[user.id!] = user.username;
+      }
+
       emit(ReviewsLoaded(
         reviews: sortedReviews.where((review) => review.comment != "").toList(),
+        userIdToUsernameMap: userIdToUsernameMap,
         userLastRating: returnedValues[0],
         averageRating: returnedValues[1],
         numComments: returnedValues[2],

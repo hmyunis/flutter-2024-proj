@@ -6,8 +6,12 @@ import '../../models/review.dart';
 
 class CommentSection extends StatefulWidget {
   const CommentSection(
-      {super.key, required this.reviews, required this.numReviews});
+      {super.key,
+      required this.reviews,
+      required this.userIdToUsernameMap,
+      required this.numReviews});
   final List<Review> reviews;
+  final Map<int, String> userIdToUsernameMap;
   final int numReviews;
 
   @override
@@ -255,7 +259,7 @@ class _CommentSectionState extends State<CommentSection> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "user id: ${widget.reviews[index].userId}",
+                        "${widget.userIdToUsernameMap[widget.reviews[index].userId]}",
                         style: TextStyle(
                           fontSize: 18,
                           letterSpacing: 2.0,

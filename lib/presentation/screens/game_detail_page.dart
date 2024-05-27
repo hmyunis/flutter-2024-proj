@@ -519,6 +519,7 @@ class _GameDetailPageState extends State<GameDetailPage> {
                             ),
                             CommentSection(
                               reviews: state.reviews,
+                              userIdToUsernameMap: state.userIdToUsernameMap,
                               numReviews: state.numComments,
                             ),
                           ],

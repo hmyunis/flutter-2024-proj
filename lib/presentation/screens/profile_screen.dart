@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../logic/blocs/user/user_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
 import '../../models/user.dart';
-import '../data/avatars.dart';
+import '../../core/avatars.dart';
 import '../widgets/avatar_picker_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {

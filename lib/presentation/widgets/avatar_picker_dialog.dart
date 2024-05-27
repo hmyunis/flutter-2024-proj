@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data/avatars.dart';
+import '../../core/avatars.dart';
 
 class AvatarPickerDialog extends StatefulWidget {
   const AvatarPickerDialog({super.key});

@@ -9,12 +9,14 @@ final class ReviewLoading extends ReviewState {}
 
 final class ReviewsLoaded extends ReviewState {
   final List<Review> reviews;
+  final Map<int, String> userIdToUsernameMap;
   final int userLastRating;
   final double averageRating;
   final int numComments;
 
   ReviewsLoaded(
       {required this.reviews,
+      required this.userIdToUsernameMap,
       required this.userLastRating,
       required this.averageRating,
       required this.numComments});

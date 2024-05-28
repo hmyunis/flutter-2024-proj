@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../logic/blocs/user/user_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
@@ -302,8 +303,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                         );
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/login', (route) => false);
+                        context.go('/');
                       }
                     },
                     builder: (context, state) {
@@ -375,8 +375,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ElevatedButton.icon(
                                 onPressed: _showDeleteConfirmationDialog,
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.red[700]),
+                                  backgroundColor:
+                                      WidgetStateProperty.all(Colors.red[700]),
                                 ),
                                 label: const Text('Terminate'),
                                 icon: const Icon(Icons.dangerous_rounded),
@@ -385,8 +385,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ElevatedButton.icon(
                                 onPressed: _showUpdateConfirmationDialog,
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.blue[700]),
+                                  backgroundColor:
+                                      WidgetStateProperty.all(Colors.blue[700]),
                                 ),
                                 label: const Text('Update'),
                                 icon: const Icon(Icons.edit_rounded),
@@ -410,13 +410,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           context.read<UserSessionBloc>().state.role == "owner"
               ? ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/rolemgt");
+                    context.push('/rolemgt');
                     context.read<UserBloc>().add(FetchUsers());
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
+                    backgroundColor: WidgetStateProperty.all(Colors.blueGrey),
                     padding:
-                        MaterialStateProperty.all(const EdgeInsets.all(10.0)),
+                        WidgetStateProperty.all(const EdgeInsets.all(10.0)),
                   ),
                   label: const Text(
                     'Role configuration setting',

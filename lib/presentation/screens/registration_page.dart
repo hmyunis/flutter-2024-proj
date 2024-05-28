@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../logic/blocs/auth/auth_bloc.dart';
 import '../../logic/blocs/collection/collection_bloc.dart';
@@ -54,7 +55,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               .read<CollectionBloc>()
               .add(FetchCollection(state.user.token!));
 
-          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+          context.go('/home');
         }
       },
       builder: (context, state) {
@@ -199,8 +200,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, "/login", (route) => false);
+                                context.go('/');
                               },
                               child: Text(
                                 'Log in',

@@ -9,9 +9,17 @@ void main() {
   late AuthRepository authRepository;
   late MockAuthDataProvider mockAuthDataProvider;
 
+  setUpAll(() {
+    registerFallbackValue(Uri());
+  });
+
   setUp(() {
     mockAuthDataProvider = MockAuthDataProvider();
     authRepository = AuthRepository(mockAuthDataProvider);
+  });
+
+  tearDown(() {
+    reset(mockAuthDataProvider);
   });
 
   group('AuthRepository', () {
@@ -27,6 +35,8 @@ void main() {
 
       expect(result, equals(token));
       verify(() => mockAuthDataProvider.signin(username, password)).called(1);
+
+      print('Login success test passed.');
     });
 
     test('login - failure', () async {
@@ -39,6 +49,8 @@ void main() {
       expect(() => authRepository.login(username, password),
           throwsA(isA<Exception>()));
       verify(() => mockAuthDataProvider.signin(username, password)).called(1);
+
+      print('Login failure test passed.');
     });
 
     test('register - success', () async {
@@ -59,6 +71,8 @@ void main() {
       verify(() => mockAuthDataProvider.signup(
               username, email, password, confirmPassword))
           .called(1);
+
+      print('Register success test passed.');
     });
 
     test('register - failure', () async {
@@ -78,20 +92,64 @@ void main() {
       verify(() => mockAuthDataProvider.signup(
               username, email, password, confirmPassword))
           .called(1);
+
+      print('Register failure test passed.');
     });
 
     test('logout', () async {
-    when(() => mockAuthDataProvider.logout()).thenAnswer((_) async {});
-    await authRepository.logout();
-    verify(() => mockAuthDataProvider.logout()).called(1);
+      when(() => mockAuthDataProvider.logout()).thenAnswer((_) async {});
+
+      await authRepository.logout();
+
+      verify(() => mockAuthDataProvider.logout()).called(1);
+
+      print('Logout test passed.');
     });
 
-
     test('token', () {
-      when(() => mockAuthDataProvider.token).thenReturn('testToken');
+      const token = 'testToken';
+      
+      when(() => mockAuthDataProvider.token).thenReturn(token);
 
-      expect(authRepository.token, equals('testToken'));
+      expect(authRepository.token, equals(token));
       verify(() => mockAuthDataProvider.token).called(1);
+
+      print('Token test passed.');
+    });
+
+    test('login with empty username and password', () async {
+      const username = '';
+      const password = '';
+
+      when(() => mockAuthDataProvider.signin(username, password))
+          .thenThrow(Exception('Invalid credentials'));
+
+      expect(() => authRepository.login(username, password),
+          throwsA(isA<Exception>()));
+      verify(() => mockAuthDataProvider.signin(username, password)).called(1);
+
+      print('Login with empty credentials test passed.');
+    });
+
+    test('register with mismatched passwords', () async {
+      const username = 'testUser';
+      const email = 'test@example.com';
+      const password = 'testPassword';
+      const confirmPassword = 'mismatchedPassword';
+
+      when(() => mockAuthDataProvider.signup(
+              username, email, password, confirmPassword))
+          .thenThrow(Exception('Passwords do not match'));
+
+      expect(
+          () => authRepository.register(
+              username, email, password, confirmPassword),
+          throwsA(isA<Exception>()));
+      verify(() => mockAuthDataProvider.signup(
+              username, email, password, confirmPassword))
+          .called(1);
+
+      print('Register with mismatched passwords test passed.');
     });
   });
 }

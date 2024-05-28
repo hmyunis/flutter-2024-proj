@@ -1,130 +1,103 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'dart:convert';
+import 'package:flutter_test/flutter_test.dart' as flutter_test; // Use a prefix to differentiate from other test libraries
+import 'package:mocktail/mocktail.dart'; // Use a prefix to differentiate from other test libraries
 import 'package:video_game_catalogue_app/data/repositories/collections_repository.dart';
 import 'package:video_game_catalogue_app/data/data_providers/collections_data_provider.dart';
 import 'package:video_game_catalogue_app/models/collection.dart';
-import 'dart:convert';
-
+import '../../test_helper.dart'; // Import the custom matcher
 class MockCollectionsDataProvider extends Mock implements CollectionsDataProvider {}
 
 void main() {
-  group('CollectionsRepository', () {
-    late MockCollectionsDataProvider mockCollectionsDataProvider;
-    late CollectionsRepository collectionsRepository;
+  late CollectionsRepository collectionsRepository;
+  late MockCollectionsDataProvider mockCollectionsDataProvider;
 
-    setUp(() {
-      mockCollectionsDataProvider = MockCollectionsDataProvider();
-      collectionsRepository = CollectionsRepository(mockCollectionsDataProvider);
+  flutter_test.setUp(() {
+    mockCollectionsDataProvider = MockCollectionsDataProvider();
+    collectionsRepository = CollectionsRepository(mockCollectionsDataProvider);
+  });
+
+  flutter_test.group('CollectionsRepository', () {
+    flutter_test.test('getCollection - success', () async {
+      const collectionId = 1;
+      final jsonResponse = jsonEncode({'userId': 1, 'status': 'completed', 'gameId': 101});
+      final expectedCollection = Collection(userId: 1, status: 'completed', gameId: 101);
+
+      when(() => mockCollectionsDataProvider.getCollection(collectionId.toString()))
+          .thenAnswer((_) async => jsonResponse);
+
+      final result = await collectionsRepository.getCollection(collectionId);
+
+      flutter_test.expect(result, equalsCollection(expectedCollection));
+      verify(() => mockCollectionsDataProvider.getCollection(collectionId.toString())).called(1);
     });
 
-    group('getCollections', () {
-      test('should return a list of collections', () async {
-        // Arrange
-        final mockResponse = '[{"id": 1, "status": "wishlist", "gameId": 123, "userId": 456}]';
-        when(() => mockCollectionsDataProvider.getCollections())
-            .thenAnswer((_) async => mockResponse);
+    flutter_test.test('getGameIdsByStatus - success', () async {
+      const userId = 1;
+      const status = 'playing';
+      final jsonResponse = jsonEncode([101, 102]);
+      final expectedGameIds = [101, 102];
 
-        // Act
-        final collections = await collectionsRepository.getCollections();
+      when(() => mockCollectionsDataProvider.getGameIdsByStatus(userId.toString(), status))
+          .thenAnswer((_) async => jsonResponse);
 
-        // Assert
-        expect(collections, isA<List<Collection>>());
-        expect(collections.length, 1);
-        expect(collections[0].id, 1);
-        expect(collections[0].status, 'wishlist');
-        expect(collections[0].gameId, 123);
-        expect(collections[0].userId, 456);
-      });
+      final result = await collectionsRepository.getGameIdsByStatus(userId, status);
+
+      flutter_test.expect(result, expectedGameIds);
+      verify(() => mockCollectionsDataProvider.getGameIdsByStatus(userId.toString(), status)).called(1);
     });
 
-    group('getCollection', () {
-      test('should return a collection', () async {
-        // Arrange
-        final mockResponse = '{"id": 1, "status": "wishlist", "gameId": 123, "userId": 456}';
-        when(() => mockCollectionsDataProvider.getCollection('1'))
-            .thenAnswer((_) async => mockResponse);
+    flutter_test.test('addCollection - success', () async {
+      final collection = Collection(userId: 1, status: 'completed', gameId: 101);
+      final jsonResponse = jsonEncode({'userId': 1, 'status': 'completed', 'gameId': 101});
+      final expectedCollection = Collection(userId: 1, status: 'completed', gameId: 101);
 
-        // Act
-        final collection = await collectionsRepository.getCollection(1);
+      when(() => mockCollectionsDataProvider.addCollection({
+        'userId': collection.userId,
+        'status': collection.status,
+        'gameId': collection.gameId,
+      })).thenAnswer((_) async => jsonResponse);
 
-        // Assert
-        expect(collection, isA<Collection>());
-        expect(collection.id, 1);
-        expect(collection.status, 'wishlist');
-        expect(collection.gameId, 123);
-        expect(collection.userId, 456);
-      });
+      final result = await collectionsRepository.addCollection(collection);
+
+      flutter_test.expect(result, equalsCollection(expectedCollection));
+      verify(() => mockCollectionsDataProvider.addCollection({
+        'userId': collection.userId,
+        'status': collection.status,
+        'gameId': collection.gameId,
+      })).called(1);
     });
 
-    group('getGameIdsByStatus', () {
-      test('should return a list of game IDs', () async {
-        // Arrange
-        final mockResponse = '[123, 456]';
-        when(() => mockCollectionsDataProvider.getGameIdsByStatus('1', 'wishlist'))
-            .thenAnswer((_) async => mockResponse);
+    flutter_test.test('deleteCollection', () async {
+      const collectionId = 1;
 
-        // Act
-        final gameIds = await collectionsRepository.getGameIdsByStatus(1, 'wishlist');
+      when(() => mockCollectionsDataProvider.deleteCollection(collectionId.toString()))
+          .thenAnswer((_) => Future<void>.value()); // Corrected to return a Future<void>
 
-        // Assert
-        expect(gameIds, isA<List<int>>());
-        expect(gameIds.length, 2);
-        expect(gameIds, contains(123));
-        expect(gameIds, contains(456));
-      });
+      await collectionsRepository.deleteCollection(collectionId);
+
+      verify(() => mockCollectionsDataProvider.deleteCollection(collectionId.toString())).called(1);
     });
 
-    group('addCollection', () {
-      test('should return a new collection', () async {
-        // Arrange
-        final mockResponse = '{"id": 1, "status": "wishlist", "gameId": 123, "userId": 456}';
-        when(() => mockCollectionsDataProvider.addCollection({'userId': 456, 'status': 'wishlist', 'gameId': 123}))
-            .thenAnswer((_) async => mockResponse);
-        final collection = Collection(userId: 456, status: 'wishlist', gameId: 123);
+    flutter_test.test('updateCollection - success', () async {
+      const collectionId = 1;
+      final collection = Collection(userId: 1, status: 'completed', gameId: 101);
+      final jsonResponse = jsonEncode({'userId': 1, 'status': 'completed', 'gameId': 101});
+      final expectedCollection = Collection(userId: 1, status: 'completed', gameId: 101);
 
-        // Act
-        final newCollection = await collectionsRepository.addCollection(collection);
+      when(() => mockCollectionsDataProvider.updateCollection(collectionId.toString(), {
+        'userId': collection.userId,
+        'status': collection.status,
+        'gameId': collection.gameId,
+      })).thenAnswer((_) async => jsonResponse);
 
-        // Assert
-        expect(newCollection, isA<Collection>());
-        expect(newCollection.id, 1);
-        expect(newCollection.status, 'wishlist');
-        expect(newCollection.gameId, 123);
-        expect(newCollection.userId, 456);
-      });
-    });
+      final result = await collectionsRepository.updateCollection(collectionId, collection);
 
-    group('deleteCollection', () {
-      test('should call the data provider to delete a collection', () async {
-        // Arrange
-        when(() => mockCollectionsDataProvider.deleteCollection('1')).thenAnswer((_) async {});
-
-        // Act
-        await collectionsRepository.deleteCollection(1);
-
-        // Assert
-        verify(() => mockCollectionsDataProvider.deleteCollection('1')).called(1);
-      });
-    });
-
-    group('updateCollection', () {
-      test('should return an updated collection', () async {
-        // Arrange
-        final mockResponse = '{"id": 1, "status": "playing", "gameId": 123, "userId": 456}';
-        when(() => mockCollectionsDataProvider.updateCollection('1', {'userId': 456, 'status': 'playing', 'gameId': 123}))
-            .thenAnswer((_) async => mockResponse);
-        final collection = Collection(userId: 456, status: 'playing', gameId: 123);
-
-        // Act
-        final updatedCollection = await collectionsRepository.updateCollection(1, collection);
-
-        // Assert
-        expect(updatedCollection, isA<Collection>());
-        expect(updatedCollection.id, 1);
-        expect(updatedCollection.status, 'playing');
-        expect(updatedCollection.gameId, 123);
-        expect(updatedCollection.userId, 456);
-      });
+      flutter_test.expect(result, equalsCollection(expectedCollection));
+      verify(() => mockCollectionsDataProvider.updateCollection(collectionId.toString(), {
+        'userId': collection.userId,
+        'status': collection.status,
+        'gameId': collection.gameId,
+      })).called(1);
     });
   });
 }

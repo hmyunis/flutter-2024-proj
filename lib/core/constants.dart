@@ -1,1 +1,1 @@
-const String apiBaseUrl = 'http://localhost:3000';
+const String apiBaseUrl = 'localhost:3000';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'data/data_providers/auth_data_provider.dart';
 import 'data/data_providers/collections_data_provider.dart';
 import 'data/data_providers/games_data_provider.dart';

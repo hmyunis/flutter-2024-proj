@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:video_game_catalogue_app/data/data_providers/reviews_data_provider.dart';
+import '../data_providers/reviews_data_provider.dart';
 
 import '../../models/review.dart';
 

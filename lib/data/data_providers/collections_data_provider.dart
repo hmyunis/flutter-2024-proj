@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 
 class CollectionsDataProvider {
   final String _baseUrl = apiBaseUrl;
+  late http.Client client;
+
+  
 
   Future getCollections() async {
     try {
@@ -90,5 +93,9 @@ class CollectionsDataProvider {
     } catch (e) {
       throw e.toString();
     }
+    
   }
+  void dispose() {
+    client.close();
+}
 }

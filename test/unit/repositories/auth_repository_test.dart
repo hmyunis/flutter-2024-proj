@@ -36,7 +36,6 @@ void main() {
       expect(result, equals(token));
       verify(() => mockAuthDataProvider.signin(username, password)).called(1);
 
-      print('Login success test passed.');
     });
 
     test('login - failure', () async {
@@ -50,7 +49,6 @@ void main() {
           throwsA(isA<Exception>()));
       verify(() => mockAuthDataProvider.signin(username, password)).called(1);
 
-      print('Login failure test passed.');
     });
 
     test('register - success', () async {
@@ -72,7 +70,6 @@ void main() {
               username, email, password, confirmPassword))
           .called(1);
 
-      print('Register success test passed.');
     });
 
     test('register - failure', () async {
@@ -93,7 +90,6 @@ void main() {
               username, email, password, confirmPassword))
           .called(1);
 
-      print('Register failure test passed.');
     });
 
     test('logout', () async {
@@ -103,7 +99,6 @@ void main() {
 
       verify(() => mockAuthDataProvider.logout()).called(1);
 
-      print('Logout test passed.');
     });
 
     test('token', () {
@@ -114,7 +109,6 @@ void main() {
       expect(authRepository.token, equals(token));
       verify(() => mockAuthDataProvider.token).called(1);
 
-      print('Token test passed.');
     });
 
     test('login with empty username and password', () async {
@@ -128,7 +122,6 @@ void main() {
           throwsA(isA<Exception>()));
       verify(() => mockAuthDataProvider.signin(username, password)).called(1);
 
-      print('Login with empty credentials test passed.');
     });
 
     test('register with mismatched passwords', () async {
@@ -149,7 +142,6 @@ void main() {
               username, email, password, confirmPassword))
           .called(1);
 
-      print('Register with mismatched passwords test passed.');
     });
   });
 }

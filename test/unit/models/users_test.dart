@@ -63,7 +63,7 @@ void main() {
         role: role,
         token: token,
       );
-      final expectedString = 'User(id: $id, username: $username, email: $email, joinDate: $joinDate, role: $role, token: $token)';
+      const expectedString = 'User(id: $id, username: $username, email: $email, joinDate: $joinDate, role: $role, token: $token)';
 
       expect(user.toString(), equals(expectedString));
     });

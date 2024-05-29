@@ -105,7 +105,7 @@ void main() {
     });
 
     flutter_test.test('deleteReview', () async {
-      final reviewId = 1;
+      const reviewId = 1;
 
       // Mock the data provider's response for deleting a review
       when(() => mockReviewsDataProvider.deleteReview(reviewId.toString())).thenAnswer((_) async {});

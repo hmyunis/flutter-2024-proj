@@ -40,7 +40,7 @@ void main() {
       const userId = 20;
 
       final collection = Collection(id: id, status: status, gameId: gameId, userId: userId);
-      final expectedString = 'Collection(id: $id, status: $status, gameId: $gameId, userId: $userId)';
+      const expectedString = 'Collection(id: $id, status: $status, gameId: $gameId, userId: $userId)';
 
       expect(collection.toString(), equals(expectedString));
     });

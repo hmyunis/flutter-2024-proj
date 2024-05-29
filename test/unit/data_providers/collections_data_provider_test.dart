@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
-import 'package:video_game_catalogue_app/core/constants.dart';
 import 'package:video_game_catalogue_app/data/data_providers/collections_data_provider.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
@@ -226,7 +224,7 @@ void main() {
       test('throws exception on network error', () async {
         // Arrange
         when(() => mockHttpClient.put(any(), headers: any(named: 'headers'), body: any(named: 'body')))
-            .thenThrow(SocketException('The semaphore timeout period has expired'));
+            .thenThrow(const SocketException('The semaphore timeout period has expired'));
 
         // Act & Assert
         expect(

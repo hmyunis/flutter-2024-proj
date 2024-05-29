@@ -78,7 +78,7 @@ void main() {
         releaseDate: releaseDate,
         imageUrl: imageUrl,
       );
-      final expectedString = 'Game{id: $id, title: $title, description: $description, genre: $genre, platform: $platform, publisher: $publisher, releaseDate: $releaseDate, imageUrl: $imageUrl}';
+      const expectedString = 'Game{id: $id, title: $title, description: $description, genre: $genre, platform: $platform, publisher: $publisher, releaseDate: $releaseDate, imageUrl: $imageUrl}';
 
       expect(game.toString(), equals(expectedString));
     });

@@ -158,6 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         children: [
                           TextButton(
+                            key: const Key("signup button"),
                             onPressed: () {
                               context.go('/register');
                             },

@@ -1,3 +1,5 @@
+import 'package:go_router/go_router.dart';
+
 import '../../logic/blocs/collection/collection_bloc.dart';
 import '../../logic/blocs/games/games_bloc.dart';
 import '../../logic/blocs/userSession/user_session_bloc.dart';
@@ -48,8 +50,8 @@ class _LoginPageState extends State<LoginPage> {
           context
               .read<CollectionBloc>()
               .add(FetchCollection(state.user.token!));
+          context.go('/home');
 
-          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
         }
       },
       builder: (context, state) {
@@ -157,8 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, '/register', (route) => false);
+                              context.go('/register');
                             },
                             child: Text(
                               'Create an account',

@@ -43,7 +43,7 @@ dependencies:
   collection: ^1.15.0
   meta: ^1.11.0
   bloc: ^8.1.4
-  
+  go_router: ^14.1.3
 
   
 

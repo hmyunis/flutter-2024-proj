@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'browse_page.dart';
 import 'favorites_page.dart';
 import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen(this.isNightMode, this.toggleNightMode, {super.key});
-  final bool isNightMode;
-  final Function toggleNightMode;
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -45,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return IconButton(
               icon: const Icon(Icons.info),
               onPressed: () {
-                Navigator.pushNamed(context, '/about');
+                context.push('/about');
               },
             );
           })
@@ -72,21 +71,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     ]),
               ),
               ListTile(
-                leading: const Icon(Icons.dark_mode),
-                title: const Text("N I G H T  M O D E"),
-                trailing: Switch(
-                  value: widget.isNightMode,
-                  activeColor: Colors.blue[500],
-                  onChanged: (value) => setState(() {
-                    widget.toggleNightMode();
-                  }),
-                ),
+                leading: const Icon(Icons.person_add_alt_1_rounded),
+                title: const Text("C R E A T E   A C C O U N T"),
+                onTap: () {
+                  context.go('/register');
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.logout),
-                title: const Text("L O G  O U T"),
+                title: const Text("L O G   O U T"),
                 onTap: () {
-                  Navigator.pushNamed(context, "/login");
+                  context.go('/');
                 },
               ),
               const Spacer(),
@@ -94,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 leading: const Icon(Icons.info),
                 title: const Text("A B O U T"),
                 onTap: () {
-                  Navigator.pushNamed(context, "/about");
+                  context.push('/about');
                 },
               ),
             ],

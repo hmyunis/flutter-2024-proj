@@ -22,8 +22,8 @@ void main(){
       final password_field = find.byKey(const Key("password_field"));
       final confirm_password_field = find.byKey(const Key("confirm_password_field"));
 
-      await tester.enterText(user_name_field, "ptaiqaalaaa3");
-      await tester.enterText(email_field, 'testuser@pargiqlil.com');
+      await tester.enterText(user_name_field, "ptaiqaalera3");
+      await tester.enterText(email_field, 'testuser@parasgiqlil.com');
       await tester.enterText(password_field, 'TestPassword123');
       await tester.enterText(confirm_password_field, 'TestPassword123');
     

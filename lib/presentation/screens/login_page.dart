@@ -106,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                         height: 20,
                       ),
                       TextField(
+                        key: const Key("login_username"),
                         controller: _usernameController,
                         style: const TextStyle(color: Colors.grey),
                         decoration: InputDecoration(
@@ -121,6 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 10),
                       TextField(
+                        key: const Key("login_password"),
                         controller: _passwordController,
                         obscureText: true,
                         style: const TextStyle(color: Colors.grey),
@@ -137,6 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
+                        key: const Key("Login_button"),
                         onPressed: () {
                           context.read<AuthBloc>().add(
                                 AuthLogin(

@@ -204,10 +204,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         child: Row(
                           children: [
                             TextButton(
+                              key: const Key("login_field"),
                               onPressed: () {
                                 context.go('/');
                               },
                               child: Text(
+
                                 'Log in',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(

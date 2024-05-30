@@ -376,7 +376,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onPressed: _showDeleteConfirmationDialog,
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      WidgetStateProperty.all(Colors.red[700]),
+                                      MaterialStateProperty.all(Colors.red[700]),
                                 ),
                                 label: const Text('Terminate'),
                                 icon: const Icon(Icons.dangerous_rounded),
@@ -386,7 +386,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onPressed: _showUpdateConfirmationDialog,
                                 style: ButtonStyle(
                                   backgroundColor:
-                                      WidgetStateProperty.all(Colors.blue[700]),
+                                      MaterialStateProperty.all(Colors.blue[700]),
                                 ),
                                 label: const Text('Update'),
                                 icon: const Icon(Icons.edit_rounded),
@@ -414,9 +414,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     context.read<UserBloc>().add(FetchUsers());
                   },
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(Colors.blueGrey),
+                    backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
                     padding:
-                        WidgetStateProperty.all(const EdgeInsets.all(10.0)),
+                        MaterialStateProperty.all(const EdgeInsets.all(10.0)),
                   ),
                   label: const Text(
                     'Role configuration setting',

@@ -1,9 +1,14 @@
 part of 'auth_bloc.dart';
 
 @immutable
-sealed class AuthState {}
+sealed class AuthState extends Equatable {
+  const AuthState();
 
-final class AuthInitial extends AuthState {}
+  List<Object> get props => [];
+}
+
+final class AuthInitial extends AuthState{}
+
 
 final class AuthLoading extends AuthState {}
 

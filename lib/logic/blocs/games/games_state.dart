@@ -1,9 +1,16 @@
 part of 'games_bloc.dart';
 
 @immutable
-sealed class GamesState {}
+sealed class GamesState extends Equatable {
+  const GamesState();
+
+  @override
+  List<Object> get props => [];
+}
 
 final class GamesInitial extends GamesState {}
+
+
 
 final class GamesLoading extends GamesState {}
 

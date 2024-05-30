@@ -1,7 +1,13 @@
 part of 'review_bloc.dart';
 
 @immutable
-sealed class ReviewEvent {}
+sealed class ReviewEvent extends Equatable {
+  const ReviewEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 
 final class LoadGameReviews extends ReviewEvent {
   final Game game;

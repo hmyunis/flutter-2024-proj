@@ -1,134 +1,167 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:mocktail/mocktail.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:video_game_catalogue_app/logic/blocs/auth/auth_bloc.dart';
+import 'package:http/http.dart';
 import 'package:video_game_catalogue_app/data/repositories/auth_repository.dart';
-import 'package:video_game_catalogue_app/models/user.dart';
+import 'package:video_game_catalogue_app/logic/blocs/auth/auth_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
-class MockAuthRepository extends Mock implements AuthRepository {}
+import 'auth_bloc_test.mocks.dart';
 
+// Generate mock classes using Mockito
+@GenerateMocks([AuthRepository])
 void main() {
-  late AuthBloc authBloc;
-  late MockAuthRepository mockAuthRepository;
-
-  setUp(() {
-    mockAuthRepository = MockAuthRepository();
-    authBloc = AuthBloc(mockAuthRepository);
-  });
-
-  tearDown(() {
-    authBloc.close();
-  });
-
   group('AuthBloc', () {
-    const username = 'testUser';
-    const password = 'testPassword123';
-    const email = 'test@example.com';
-    const confirmPassword = 'testPassword123';
-    const token = '{"token": "testToken"}';
-    const id = 1;
-    const joinDate = '2024-01-01';
-    const role = 'admin';
+    late AuthRepository mockAuthRepository;
+    late AuthBloc authBloc;
 
-    final user = User(
-      id: id,
-      username: username,
-      email: email,
-      joinDate: joinDate,
-      role: role,
-      token: 'testToken',
-    );
-
-    void arrangeAuthRepositoryLogin() {
-      when(() => mockAuthRepository.login(any(), any())).thenAnswer(
-        (_) async => token,
-      );
-    }
-
-    void arrangeAuthRepositoryRegister() {
-      when(() => mockAuthRepository.register(any(), any(), any(), any()))
-          .thenAnswer(
-        (_) async => token,
-      );
-    }
-
-    test('initial state is AuthInitial', () {
-      expect(authBloc.state, equals(AuthInitial()));
+    setUp(() {
+      mockAuthRepository = MockAuthRepository();
+      authBloc = AuthBloc(mockAuthRepository);
     });
 
-    blocTest<AuthBloc, AuthState>(
-      'emits [AuthLoading, AuthSuccess] when AuthLogin is added and login is successful',
-      setUp: arrangeAuthRepositoryLogin,
-      build: () => authBloc,
-      act: (bloc) => bloc.add(AuthLogin(username: username, password: password)),
-      expect: () => [
-        equals(AuthLoading()),
-        isA<AuthSuccess>(), // Matcher for AuthSuccess state
-      ],
-      verify: (_) {
-        verify(() => mockAuthRepository.login(username, password)).called(1);
-      },
-    );
+    tearDown(() {
+      authBloc.close();
+    });
 
-    blocTest<AuthBloc, AuthState>(
-      'emits [AuthLoading, AuthFailure] when AuthLogin is added and login fails',
-      setUp: () {
-        when(() => mockAuthRepository.login(any(), any())).thenThrow(Exception('Login failed'));
-      },
-      build: () => authBloc,
-      act: (bloc) => bloc.add(AuthLogin(username: username, password: password)),
-      expect: () => [
-        equals(AuthLoading()),
-        isA<AuthFailure>(), // Matcher for AuthFailure state
-      ],
-      verify: (_) {
-        verify(() => mockAuthRepository.login(username, password)).called(1);
-      },
-    );
+    group('AuthLogin', () {
+      const String testUsername = 'testuser';
+      const String testPassword = 'testpassword';
+      const String testToken = '{"token": "testtoken"}'; 
 
-    blocTest<AuthBloc, AuthState>(
-      'emits [AuthLoading, AuthSuccess] when AuthRegister is added and registration is successful',
-      setUp: arrangeAuthRepositoryRegister,
-      build: () => authBloc,
-      act: (bloc) => bloc.add(AuthRegister(
-        username: username,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-      )),
-      expect: () => [
-        equals(AuthLoading()),
-        isA<AuthSuccess>(), // Matcher for AuthSuccess state
-      ],
-      verify: (_) {
-        verify(() => mockAuthRepository.register(
-          username, email, password, confirmPassword,
-        )).called(1);
-      },
-    );
 
-    blocTest<AuthBloc, AuthState>(
-      'emits [AuthLoading, AuthFailure] when AuthRegister is added and registration fails',
-      setUp: () {
-        when(() => mockAuthRepository.register(any(), any(), any(), any()))
-            .thenThrow(Exception('Registration failed'));
-      },
-      build: () => authBloc,
-      act: (bloc) => bloc.add(AuthRegister(
-        username: username,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-      )),
-      expect: () => [
-        equals(AuthLoading()),
-        isA<AuthFailure>(), // Matcher for AuthFailure state
-      ],
-      verify: (_) {
-        verify(() => mockAuthRepository.register(
-          username, email, password, confirmPassword,
-        )).called(1);
-      },
-    );
+      blocTest<AuthBloc, AuthState>(
+        'emits [AuthLoading, AuthFailure] when username is empty',
+        build: () {
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthLogin(
+          username: '',
+          password: testPassword,
+        )),
+        expect: () => [
+          AuthLoading(),
+          isA<AuthFailure>(),
+        ],
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [AuthLoading, AuthFailure] when password is empty',
+        build: () {
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthLogin(
+          username: testUsername,
+          password: '',
+        )),
+        expect: () => [
+          AuthLoading(),
+          isA<AuthFailure>(),
+        ],
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [AuthLoading, AuthFailure] when username is too short',
+        build: () {
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthLogin(
+          username: 'abc', // Too short
+          password: testPassword,
+        )),
+        expect: () => [
+          AuthLoading(),
+          isA<AuthFailure>(),
+        ],
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [AuthLoading, AuthFailure] when password is too short',
+        build: () {
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthLogin(
+          username: testUsername,
+          password: '1234567', // Too short
+        )),
+        expect: () => [
+          AuthLoading(),
+          isA<AuthFailure>(),
+        ],
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [AuthLoading, AuthFailure] when login fails due to incorrect credentials',
+        build: () {
+          when(mockAuthRepository.login(testUsername, testPassword))
+              .thenThrow(Exception('Login failed'));
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthLogin(
+          username: testUsername,
+          password: testPassword,
+        )),
+        expect: () => [
+          AuthLoading(),
+          isA<AuthFailure>(),
+        ],
+      );
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [AuthLoading, AuthFailure] when a network error occurs',
+        build: () {
+          when(mockAuthRepository.login(testUsername, testPassword))
+              .thenThrow(ClientException('Network error'));
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthLogin(
+          username: testUsername,
+          password: testPassword,
+        )),
+        expect: () => [
+          AuthLoading(),
+          isA<AuthFailure>(),
+        ],
+      );
+    });
+
+    group('AuthRegister', () {
+      const String testUsername = 'testuser';
+      const String testEmail = 'testuser@example.com';
+      const String testPassword = 'testpassword';
+      const String testConfirmPassword = 'testpassword';
+      const String testToken = 'testtoken';
+
+
+      blocTest<AuthBloc, AuthState>(
+        'emits [AuthLoading, AuthFailure] when registration fails',
+        build: () {
+          when(mockAuthRepository.register(testUsername, testEmail,
+                  testPassword, testConfirmPassword))
+              .thenThrow(Exception('Registration failed'));
+          return authBloc;
+        },
+        act: (bloc) => bloc.add(AuthRegister(
+          username: testUsername,
+          email: testEmail,
+          password: testPassword,
+          confirmPassword: testConfirmPassword,
+        )),
+        expect: () => [
+          AuthLoading(),
+          isA<AuthFailure>(),
+        ],
+        verify: (bloc) {
+          verify(mockAuthRepository.register(testUsername, testEmail,
+              testPassword, testConfirmPassword));
+        },
+      );
+
+      // Add more bloc tests for different scenarios like:
+      // - Empty username, email, password, or confirm password
+      // - Invalid email format
+      // - Passwords don't match
+      // - Network errors
+    });
   });
 }

@@ -110,6 +110,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         height: 20,
                       ),
                       TextField(
+                        key: const Key("username_field"),
                         controller: _usernameController,
                         style: const TextStyle(color: Colors.grey),
                         decoration: InputDecoration(
@@ -127,6 +128,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         height: 10,
                       ),
                       TextField(
+                        key: const Key("email_field"),
                         controller: _emailController,
                         style: const TextStyle(color: Colors.grey),
                         decoration: InputDecoration(
@@ -142,6 +144,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                       const SizedBox(height: 10),
                       TextField(
+                        key: const Key("password_field"),
                         controller: _passwordController,
                         obscureText: true,
                         style: const TextStyle(color: Colors.grey),
@@ -158,6 +161,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                       const SizedBox(height: 10),
                       TextField(
+                        key: const Key("confirm_password_field"),
                         controller: _confirmPasswordController,
                         obscureText: true,
                         style: const TextStyle(color: Colors.grey),
@@ -174,6 +178,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
+                        key: const Key("create_account_field"),
                         onPressed: () {
                           context.read<AuthBloc>().add(
                                 AuthRegister(

@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shadowColor: Colors.black,
       ),
       drawer: Drawer(
+        key: const Key("drawer"),
         backgroundColor: Colors.blueGrey[500],
         child: Builder(builder: (context) {
           return Column(
@@ -78,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               ListTile(
+                key: const Key("logout"),
                 leading: const Icon(Icons.logout),
                 title: const Text("L O G   O U T"),
                 onTap: () {

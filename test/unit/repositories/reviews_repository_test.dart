@@ -18,7 +18,6 @@ void main() {
 
   flutter_test.group('ReviewsRepository', () {
     flutter_test.test('getReviewsByGameId', () async {
-      // Mock response containing a list of reviews
       final jsonResponse = jsonEncode([
         {
           'id': 1,
@@ -36,14 +35,11 @@ void main() {
         }
       ]);
 
-      // Mock the response from the data provider
-      when(() => mockReviewsDataProvider.getReviewsByGameId('101')).thenAnswer((_) async => jsonResponse);
-
-      // Assertions...
+      when(() => mockReviewsDataProvider.getReviewsByGameId('101'))
+          .thenAnswer((_) async => jsonResponse);
     });
 
     flutter_test.test('getReviewById', () async {
-      // Mock response for a single review
       final jsonResponse = jsonEncode({
         'id': 1,
         'userId': 1,
@@ -52,15 +48,11 @@ void main() {
         'rating': 5,
       });
 
-      // Mock the response from the data provider
-      when(() => mockReviewsDataProvider.getReview('1')).thenAnswer((_) async => jsonResponse);
-
-
-      // Assertions...
+      when(() => mockReviewsDataProvider.getReview('1'))
+          .thenAnswer((_) async => jsonResponse);
     });
 
     flutter_test.test('getReviews', () async {
-      // Mock response containing a list of reviews
       final jsonResponse = jsonEncode([
         {
           'id': 1,
@@ -78,16 +70,11 @@ void main() {
         }
       ]);
 
-      // Mock the response from the data provider
-      when(() => mockReviewsDataProvider.getReviews()).thenAnswer((_) async => jsonResponse);
-
-
-      // Assertions...
+      when(() => mockReviewsDataProvider.getReviews())
+          .thenAnswer((_) async => jsonResponse);
     });
 
-    // Add more test cases for other methods as needed...
     flutter_test.test('addReview', () async {
-      // Mock response for a newly added review
       final jsonResponse = jsonEncode({
         'id': 1,
         'userId': 1,
@@ -96,23 +83,17 @@ void main() {
         'rating': 5,
       });
 
-
-      // Mock the response from the data provider
-      when(() => mockReviewsDataProvider.addReview(any())).thenAnswer((_) async => jsonResponse);
-
-
-      // Assertions...
+      when(() => mockReviewsDataProvider.addReview(any()))
+          .thenAnswer((_) async => jsonResponse);
     });
 
     flutter_test.test('deleteReview', () async {
       const reviewId = 1;
 
-      // Mock the data provider's response for deleting a review
-      when(() => mockReviewsDataProvider.deleteReview(reviewId.toString())).thenAnswer((_) async {});
+      when(() => mockReviewsDataProvider.deleteReview(reviewId.toString()))
+          .thenAnswer((_) async {});
 
       await reviewsRepository.deleteReview(reviewId);
-
-      // Assertions...
     });
 
     flutter_test.test('updateReview', () async {
@@ -124,11 +105,8 @@ void main() {
         'rating': 4,
       };
 
-      // Mock the data provider's response for updating a review
-      when(() => mockReviewsDataProvider.updateReview(any(), any())).thenAnswer((_) async => jsonEncode(updatedReviewData));
-
-
-      // Assertions...
+      when(() => mockReviewsDataProvider.updateReview(any(), any()))
+          .thenAnswer((_) async => jsonEncode(updatedReviewData));
     });
   });
 }

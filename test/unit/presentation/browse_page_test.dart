@@ -6,12 +6,13 @@ import 'package:mocktail/mocktail.dart';
 import 'package:video_game_catalogue_app/logic/blocs/collection/collection_bloc.dart';
 import 'package:video_game_catalogue_app/logic/blocs/games/games_bloc.dart';
 import 'package:video_game_catalogue_app/logic/blocs/userSession/user_session_bloc.dart';
-import 'package:video_game_catalogue_app/models/user.dart'; 
+import 'package:video_game_catalogue_app/models/user.dart';
 import 'package:video_game_catalogue_app/presentation/screens/browse_page.dart';
 
-
-class MockUserSessionBloc extends MockBloc<UserSessionEvent, User> // Correct state type
-    implements UserSessionBloc {}
+class MockUserSessionBloc
+    extends MockBloc<UserSessionEvent, User> // Correct state type
+    implements
+        UserSessionBloc {}
 
 class MockGamesBloc extends MockBloc<GamesEvent, GamesState>
     implements GamesBloc {}
@@ -47,12 +48,15 @@ void main() {
 
   testWidgets('BrowsePage displays circular indicator when games are loading',
       (tester) async {
-    // Emit a User object as state
-    when(() => mockUserSessionBloc.state)
-        .thenReturn(User(id: 1, username: 'testuser', email: 'test@example.com', joinDate: DateTime.now().toString(), role: 'user', token: 'testtoken'));
+    when(() => mockUserSessionBloc.state).thenReturn(User(
+        id: 1,
+        username: 'testuser',
+        email: 'test@example.com',
+        joinDate: DateTime.now().toString(),
+        role: 'user',
+        token: 'testtoken'));
     when(() => mockGamesBloc.state).thenReturn(GamesLoading());
     await tester.pumpWidget(createBrowsePage());
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
-   
 }

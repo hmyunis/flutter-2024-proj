@@ -10,7 +10,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'collection_bloc_test.mocks.dart';
 
-// Generate mock classes using Mockito
 @GenerateMocks(
     [GamesRepository, CollectionsRepository, CollectionsDataProvider])
 void main() {
@@ -50,7 +49,6 @@ void main() {
       gamesBloc = GamesBloc(mockGamesRepository);
     });
 
-    // Test case for GamesLoadEvent
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GamesLoaded] when GamesLoadEvent is added and userId is not null',
       build: () => gamesBloc,
@@ -61,7 +59,6 @@ void main() {
       ],
     );
 
-    // Test case for GamesLoadEvent with null userId
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameLoadError] when GamesLoadEvent is added and userId is null',
       build: () => gamesBloc,
@@ -72,7 +69,6 @@ void main() {
       ],
     );
 
-    // Test case for CreateGameEvent
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameCreationSuccess] when CreateGameEvent is added and game creation is successful',
       build: () {
@@ -98,7 +94,6 @@ void main() {
       ],
     );
 
-    // Test case for UpdateGameEvent
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameUpdateSuccess] when UpdateGameEvent is added and game update is successful',
       build: () {
@@ -134,7 +129,6 @@ void main() {
       ],
     );
 
-    // Test case for DeleteGameEvent
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameDeleteSuccess] when DeleteGameEvent is added and game deletion is successful',
       build: () {
@@ -143,8 +137,8 @@ void main() {
       },
       act: (bloc) => bloc.add(
         DeleteGameEvent(
-          game: mockGames[0], // Use a valid mock game
-          token: 'test-token', // Use a valid token string
+          game: mockGames[0],
+          token: 'test-token',
         ),
       ),
       expect: () => [
@@ -153,7 +147,6 @@ void main() {
       ],
     );
 
-    // Test case for AddGameToCollection
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameToCollectionAddSuccess] when AddGameToCollection is added',
       build: () {
@@ -172,7 +165,6 @@ void main() {
       ],
     );
 
-    // Test case for RemoveAGameFromCollection
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameFromCollectionRemoveSuccess] when RemoveAGameFromCollection is added and collection is found',
       build: () {

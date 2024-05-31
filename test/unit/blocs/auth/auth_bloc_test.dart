@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 
 import 'auth_bloc_test.mocks.dart';
 
-// Generate mock classes using Mockito
 @GenerateMocks([AuthRepository])
 void main() {
   group('AuthBloc', () {
@@ -27,8 +26,7 @@ void main() {
     group('AuthLogin', () {
       const String testUsername = 'testuser';
       const String testPassword = 'testpassword';
-      const String testToken = '{"token": "testtoken"}'; 
-
+      const String testToken = '{"token": "testtoken"}';
 
       blocTest<AuthBloc, AuthState>(
         'emits [AuthLoading, AuthFailure] when username is empty',
@@ -132,12 +130,11 @@ void main() {
       const String testConfirmPassword = 'testpassword';
       const String testToken = 'testtoken';
 
-
       blocTest<AuthBloc, AuthState>(
         'emits [AuthLoading, AuthFailure] when registration fails',
         build: () {
-          when(mockAuthRepository.register(testUsername, testEmail,
-                  testPassword, testConfirmPassword))
+          when(mockAuthRepository.register(
+                  testUsername, testEmail, testPassword, testConfirmPassword))
               .thenThrow(Exception('Registration failed'));
           return authBloc;
         },
@@ -152,16 +149,10 @@ void main() {
           isA<AuthFailure>(),
         ],
         verify: (bloc) {
-          verify(mockAuthRepository.register(testUsername, testEmail,
-              testPassword, testConfirmPassword));
+          verify(mockAuthRepository.register(
+              testUsername, testEmail, testPassword, testConfirmPassword));
         },
       );
-
-      // Add more bloc tests for different scenarios like:
-      // - Empty username, email, password, or confirm password
-      // - Invalid email format
-      // - Passwords don't match
-      // - Network errors
     });
   });
 }

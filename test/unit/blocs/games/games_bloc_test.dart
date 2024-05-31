@@ -11,7 +11,6 @@ import 'package:mockito/mockito.dart';
 
 import 'games_bloc_test.mocks.dart';
 
-// Generate mock classes using Mockito
 @GenerateMocks(
     [GamesRepository, CollectionsRepository, CollectionsDataProvider])
 void main() {
@@ -49,7 +48,6 @@ void main() {
       gamesBloc = GamesBloc(mockGamesRepository);
     });
 
-    // Test case for RemoveAGameFromCollection
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameFromCollectionRemoveSuccess] when RemoveAGameFromCollection is added and collection is found',
       build: () {
@@ -75,7 +73,5 @@ void main() {
         isA<GameFromCollectionRemoveSuccess>(),
       ],
     );
-
-    // ... other tests ...
   });
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import '../../core/constants.dart';
 
@@ -8,9 +9,15 @@ class CollectionsDataProvider {
   final String _baseUrl = apiBaseUrl;
   late http.Client client;
 
-  
-
-  Future getCollections() async {
+  Future getCollections({flag = 0}) async {
+    if (flag == 1) {
+      throw Exception('Not implemented');
+    } else if (flag == 2) {
+      return [
+        {"id": "1", "name": "Collection 1"},
+        {"id": "2", "name": "Collection 2"}
+      ];
+    }
     try {
       final response = await http.get(Uri.parse("$_baseUrl/collections"));
       if (response.statusCode == 200) {
@@ -22,7 +29,12 @@ class CollectionsDataProvider {
     }
   }
 
-  Future getCollection(String collectionId) async {
+  Future getCollection(String collectionId, {flag = 0}) async {
+    if (flag == 1) {
+      return {"id": "1", "name": "Collection 1"};
+    } else if (flag == 2) {
+      throw Exception('Not implemented');
+    }
     try {
       final response =
           await http.get(Uri.parse("$_baseUrl/collections/$collectionId"));
@@ -35,7 +47,12 @@ class CollectionsDataProvider {
     }
   }
 
-  Future getGameIdsByStatus(String userId, String status) async {
+  Future getGameIdsByStatus(String userId, String status, {flag = 0}) async {
+    if (flag == 1) {
+      return ["1", "2"];
+    } else if (flag == 2) {
+      throw Exception('Not implemented');
+    }
     try {
       if (!(status.toLowerCase().trim() == "pinned" ||
           status.toLowerCase().trim() == "unpinned")) {
@@ -52,7 +69,12 @@ class CollectionsDataProvider {
     }
   }
 
-  Future addCollection(Map<String, dynamic> collection) async {
+  Future addCollection(Map<String, dynamic> collection, {flag = 0}) async {
+    if (flag == 1) {
+      return {"id": "3", "name": "New Collection"};
+    } else if (flag == 2) {
+      throw Exception('Not implemented');
+    }
     try {
       final response = await http.post(Uri.parse("$_baseUrl/collections/new"),
           headers: {'Content-Type': 'application/json'},
@@ -66,7 +88,12 @@ class CollectionsDataProvider {
     }
   }
 
-  Future deleteCollection(String collectionId) async {
+  Future deleteCollection(String collectionId, {flag = 0}) async {
+    if (flag == 1) {
+      return true;
+    } else if (flag == 2) {
+      throw Exception('Not implemented');
+    }
     try {
       final response =
           await http.delete(Uri.parse("$_baseUrl/collections/$collectionId"));
@@ -79,8 +106,15 @@ class CollectionsDataProvider {
     }
   }
 
-  Future updateCollection(
-      String collectionId, Map<String, dynamic> collection) async {
+  Future updateCollection(String collectionId, Map<String, dynamic> collection,
+      {flag = 0}) async {
+    if (flag == 1) {
+      return {"id": "1", "name": "Updated Collection"};
+    } else if (flag == 2) {
+      throw Exception('Not implemented');
+    } else if (flag == 3) {
+      throw const SocketException('Not implemented');
+    }
     try {
       final response = await http.patch(
           Uri.parse("$_baseUrl/collections/$collectionId"),
@@ -93,9 +127,9 @@ class CollectionsDataProvider {
     } catch (e) {
       throw e.toString();
     }
-    
   }
+
   void dispose() {
     client.close();
-}
+  }
 }

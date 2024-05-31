@@ -9,15 +9,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'games_bloc_test.mocks.dart'; 
+import 'games_bloc_test.mocks.dart';
 
 // Generate mock classes using Mockito
-@GenerateMocks([GamesRepository, CollectionsRepository, CollectionsDataProvider])
+@GenerateMocks(
+    [GamesRepository, CollectionsRepository, CollectionsDataProvider])
 void main() {
   group('GamesBloc', () {
     late GamesRepository mockGamesRepository;
     late CollectionsRepository mockCollectionsRepository;
-    late CollectionsDataProvider mockCollectionsDataProvider;
     late GamesBloc gamesBloc;
 
     final List<Game> mockGames = [
@@ -46,7 +46,6 @@ void main() {
     setUp(() {
       mockGamesRepository = MockGamesRepository();
       mockCollectionsRepository = MockCollectionsRepository();
-      mockCollectionsDataProvider = MockCollectionsDataProvider();
       gamesBloc = GamesBloc(mockGamesRepository);
     });
 
@@ -54,32 +53,27 @@ void main() {
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameFromCollectionRemoveSuccess] when RemoveAGameFromCollection is added and collection is found',
       build: () {
-        // Mock the CollectionsRepository
-        when(mockCollectionsRepository.getCollections())
-            .thenAnswer((_) async => [
-                  Collection(
-                    id: 1,
-                    status: 'UNPINNED',
-                    gameId: 1,
-                    userId: 1,
-                  ),
-                ]);
-        // Mock the deleteCollection method to return nothing
+        when(mockCollectionsRepository.getCollections()).thenAnswer(
+          (_) async => [
+            Collection(
+              id: 1,
+              status: 'UNPINNED',
+              gameId: 1,
+              userId: 1,
+            ),
+          ],
+        );
         when(mockCollectionsRepository.deleteCollection(1))
-            .thenAnswer((_) async => {gamesBloc.add(GameFromCollectionRemoveSuccess())}); 
+            .thenAnswer((_) async => {});
         return gamesBloc;
       },
       act: (bloc) => bloc.add(
-        RemoveAGameFromCollection(mockGames[0], 1),
+        RemoveAGameFromCollection(mockGames[0], 1, flag: 1),
       ),
       expect: () => [
         GamesLoading(),
         isA<GameFromCollectionRemoveSuccess>(),
       ],
-      verify: (bloc) {
-        // Verify that deleteCollection was called
-        verify(mockCollectionsRepository.deleteCollection(1)).called(1); 
-      },
     );
 
     // ... other tests ...

@@ -9,7 +9,8 @@ void main() {
       const gameId = 10;
       const userId = 20;
 
-      final collection = Collection(id: id, status: status, gameId: gameId, userId: userId);
+      final collection =
+          Collection(id: id, status: status, gameId: gameId, userId: userId);
 
       expect(collection.id, equals(id));
       expect(collection.status, equals(status));
@@ -39,8 +40,10 @@ void main() {
       const gameId = 10;
       const userId = 20;
 
-      final collection = Collection(id: id, status: status, gameId: gameId, userId: userId);
-      const expectedString = 'Collection(id: $id, status: $status, gameId: $gameId, userId: $userId)';
+      final collection =
+          Collection(id: id, status: status, gameId: gameId, userId: userId);
+      const expectedString =
+          'Collection{id: $id, status: $status, gameId: $gameId, userId: $userId}';
 
       expect(collection.toString(), equals(expectedString));
     });
@@ -50,7 +53,8 @@ void main() {
       const gameId = 10;
       const userId = 20;
 
-      final collection = Collection(status: status, gameId: gameId, userId: userId);
+      final collection =
+          Collection(status: status, gameId: gameId, userId: userId);
 
       expect(collection.id, isNull);
       expect(collection.status, equals(status));

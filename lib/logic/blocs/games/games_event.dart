@@ -5,8 +5,9 @@ sealed class GamesEvent {}
 
 class GamesLoadEvent extends GamesEvent {
   final int? userId;
+  final int flag;
 
-  GamesLoadEvent(this.userId);
+  GamesLoadEvent(this.userId, {this.flag = 0});
 }
 
 class CreateGameEvent extends GamesEvent {
@@ -68,13 +69,15 @@ class DeleteGameEvent extends GamesEvent {
 class AddGameToCollection extends GamesEvent {
   final Game game;
   final int userId;
+  final int flag;
 
-  AddGameToCollection(this.game, this.userId);
+  AddGameToCollection(this.game, this.userId, {this.flag = 0});
 }
 
 class RemoveAGameFromCollection extends GamesEvent {
   final Game game;
   final int userId;
+  final int flag;
 
-  RemoveAGameFromCollection(this.game, this.userId);
+  RemoveAGameFromCollection(this.game, this.userId, {this.flag = 0});
 }

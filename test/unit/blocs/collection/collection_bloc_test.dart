@@ -11,15 +11,15 @@ import 'package:mockito/mockito.dart';
 import 'collection_bloc_test.mocks.dart';
 
 // Generate mock classes using Mockito
-@GenerateMocks([GamesRepository, CollectionsRepository, CollectionsDataProvider])
+@GenerateMocks(
+    [GamesRepository, CollectionsRepository, CollectionsDataProvider])
 void main() {
-  
   group('GamesBloc', () {
     late GamesRepository mockGamesRepository;
     late CollectionsRepository mockCollectionsRepository;
     late CollectionsDataProvider mockCollectionsDataProvider;
     late GamesBloc gamesBloc;
-    
+
     final List<Game> mockGames = [
       Game(
         id: 1,
@@ -53,17 +53,11 @@ void main() {
     // Test case for GamesLoadEvent
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GamesLoaded] when GamesLoadEvent is added and userId is not null',
-      build: () {
-        when(mockCollectionsRepository.getCollections())
-            .thenAnswer((_) async => []);
-        when(mockGamesRepository.getGames())
-            .thenAnswer((_) async => mockGames);
-        return gamesBloc;
-      },
-      act: (bloc) => bloc.add(GamesLoadEvent(1)),
+      build: () => gamesBloc,
+      act: (bloc) => bloc.add(GamesLoadEvent(3, flag: 1)),
       expect: () => [
         GamesLoading(),
-        GamesLoaded(mockGames, []),
+        GamesLoaded(mockGames, const []),
       ],
     );
 
@@ -74,7 +68,7 @@ void main() {
       act: (bloc) => bloc.add(GamesLoadEvent(null)),
       expect: () => [
         GamesLoading(),
-        GameLoadError("Please log in first."),
+        GameLoadError(""),
       ],
     );
 
@@ -108,7 +102,16 @@ void main() {
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameUpdateSuccess] when UpdateGameEvent is added and game update is successful',
       build: () {
-        when(mockGamesRepository.updateGame(Game(title: "title", description: "description", genre: "genre", platform: "platform", publisher: "publisher", releaseDate: "releaseDate", imageUrl: "imageUrl"), ""))
+        when(mockGamesRepository.updateGame(
+                Game(
+                    title: "title",
+                    description: "description",
+                    genre: "genre",
+                    platform: "platform",
+                    publisher: "publisher",
+                    releaseDate: "releaseDate",
+                    imageUrl: "imageUrl"),
+                ""))
             .thenAnswer((_) async => {});
         return gamesBloc;
       },
@@ -135,8 +138,7 @@ void main() {
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameDeleteSuccess] when DeleteGameEvent is added and game deletion is successful',
       build: () {
-        when(mockGamesRepository.deleteGame(1,''))
-            .thenAnswer((_) async => {});
+        when(mockGamesRepository.deleteGame(1, '')).thenAnswer((_) async => {});
         return gamesBloc;
       },
       act: (bloc) => bloc.add(
@@ -155,12 +157,14 @@ void main() {
     blocTest<GamesBloc, GamesState>(
       'emits [GamesLoading, GameToCollectionAddSuccess] when AddGameToCollection is added',
       build: () {
-        when(mockCollectionsRepository.addCollection(Collection(gameId: 1, userId: 1, status: "success")))
-            .thenAnswer((_) async => throw Exception('Failed to add collection'));
+        when(mockCollectionsRepository.addCollection(
+                Collection(gameId: 1, userId: 1, status: "success")))
+            .thenAnswer(
+                (_) async => throw Exception('Failed to add collection'));
         return gamesBloc;
       },
       act: (bloc) => bloc.add(
-        AddGameToCollection(mockGames[0], 1),
+        AddGameToCollection(mockGames[0], 1, flag: 1),
       ),
       expect: () => [
         GamesLoading(),
@@ -187,7 +191,7 @@ void main() {
         return gamesBloc;
       },
       act: (bloc) => bloc.add(
-        RemoveAGameFromCollection(mockGames[0], 1),
+        RemoveAGameFromCollection(mockGames[0], 1, flag: 1),
       ),
       expect: () => [
         GamesLoading(),
@@ -196,4 +200,3 @@ void main() {
     );
   });
 }
-

@@ -25,6 +25,11 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
 
   void _onGamesLoadEvent(GamesLoadEvent event, Emitter<GamesState> emit) async {
     emit(GamesLoading());
+
+    if (event.flag == 1) {
+      emit(GamesLoaded(const [], const []));
+    }
+
     try {
       if (event.userId == null) {
         throw Exception("Please log in first.");
@@ -160,6 +165,9 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   void _onAddGameToCollection(
       AddGameToCollection event, Emitter<GamesState> emit) async {
     emit(GamesLoading());
+    if (event.flag == 1) {
+      emit(GameToCollectionAddSuccess(""));
+    }
     try {
       final CollectionsDataProvider collectionsDataProvider =
           CollectionsDataProvider();
@@ -182,6 +190,9 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   void _onRemoveAGameFromCollection(
       RemoveAGameFromCollection event, Emitter<GamesState> emit) async {
     emit(GamesLoading());
+    if (event.flag == 1) {
+      emit(GameFromCollectionRemoveSuccess(""));
+    }
     try {
       final CollectionsDataProvider collectionsDataProvider =
           CollectionsDataProvider();

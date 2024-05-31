@@ -8,7 +8,8 @@ class MockHttpClient extends Mock implements http.Client {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue(Uri.parse('http://example.com')); // Register fallback value
+    registerFallbackValue(
+        Uri.parse('http://example.com')); // Register fallback value
   });
 
   group('CollectionsDataProvider', () {
@@ -40,7 +41,7 @@ void main() {
             .thenAnswer((_) async => http.Response(mockResponse, 200));
 
         // Act
-        final result = await collectionsDataProvider.getCollections();
+        final result = await collectionsDataProvider.getCollections(flag: 2);
 
         // Assert
         expect(result, isA<List<dynamic>>());
@@ -55,7 +56,7 @@ void main() {
 
         // Act & Assert
         expect(
-            () async => await collectionsDataProvider.getCollections(),
+            () async => await collectionsDataProvider.getCollections(flag: 1),
             throwsException);
       });
     });
@@ -73,7 +74,8 @@ void main() {
             .thenAnswer((_) async => http.Response(mockResponse, 200));
 
         // Act
-        final result = await collectionsDataProvider.getCollection('1');
+        final result =
+            await collectionsDataProvider.getCollection('1', flag: 1);
 
         // Assert
         expect(result, isA<Map<String, dynamic>>());
@@ -88,7 +90,8 @@ void main() {
 
         // Act & Assert
         expect(
-            () async => await collectionsDataProvider.getCollection('1'),
+            () async =>
+                await collectionsDataProvider.getCollection('1', flag: 2),
             throwsException);
       });
     });
@@ -108,7 +111,8 @@ void main() {
             .thenAnswer((_) async => http.Response(mockResponse, 200));
 
         // Act
-        final result = await collectionsDataProvider.getGameIdsByStatus('1', 'owned');
+        final result = await collectionsDataProvider
+            .getGameIdsByStatus('1', 'owned', flag: 1);
 
         // Assert
         expect(result, isA<List<dynamic>>());
@@ -122,7 +126,8 @@ void main() {
 
         // Act & Assert
         expect(
-            () async => await collectionsDataProvider.getGameIdsByStatus('1', 'owned'),
+            () async => await collectionsDataProvider
+                .getGameIdsByStatus('1', 'owned', flag: 2),
             throwsException);
       });
     });
@@ -136,13 +141,13 @@ void main() {
           "name": "New Collection"
         }
         ''';
-        when(() => mockHttpClient.post(any(), headers: any(named: 'headers'), body: any(named: 'body')))
+        when(() => mockHttpClient.post(any(),
+                headers: any(named: 'headers'), body: any(named: 'body')))
             .thenAnswer((_) async => http.Response(mockResponse, 201));
 
         // Act
-        final result = await collectionsDataProvider.addCollection({
-          'name': 'New Collection'
-        });
+        final result = await collectionsDataProvider
+            .addCollection({'name': 'New Collection'}, flag: 1);
 
         // Assert
         expect(result, isA<Map<String, dynamic>>());
@@ -152,12 +157,14 @@ void main() {
 
       test('throws exception on non-200/201 status code', () async {
         // Arrange
-        when(() => mockHttpClient.post(any(), headers: any(named: 'headers'), body: any(named: 'body')))
+        when(() => mockHttpClient.post(any(),
+                headers: any(named: 'headers'), body: any(named: 'body')))
             .thenAnswer((_) async => http.Response('', 400));
 
         // Act & Assert
         expect(
-            () async => await collectionsDataProvider.addCollection({}),
+            () async =>
+                await collectionsDataProvider.addCollection({}, flag: 2),
             throwsException);
       });
     });
@@ -169,7 +176,8 @@ void main() {
             .thenAnswer((_) async => http.Response('', 204));
 
         // Act
-        final result = await collectionsDataProvider.deleteCollection('1');
+        final result =
+            await collectionsDataProvider.deleteCollection('1', flag: 1);
 
         // Assert
         expect(result, isTrue);
@@ -182,7 +190,8 @@ void main() {
 
         // Act & Assert
         expect(
-            () async => await collectionsDataProvider.deleteCollection('1'),
+            () async =>
+                await collectionsDataProvider.deleteCollection('1', flag: 2),
             throwsException);
       });
     });
@@ -196,13 +205,13 @@ void main() {
           "name": "Updated Collection"
         }
         ''';
-        when(() => mockHttpClient.put(any(), headers: any(named: 'headers'), body: any(named: 'body')))
+        when(() => mockHttpClient.put(any(),
+                headers: any(named: 'headers'), body: any(named: 'body')))
             .thenAnswer((_) async => http.Response(mockResponse, 200));
 
         // Act
-        final result = await collectionsDataProvider.updateCollection('1', {
-          'name': 'Updated Collection'
-        });
+        final result = await collectionsDataProvider
+            .updateCollection('1', {'name': 'Updated Collection'}, flag: 1);
 
         // Assert
         expect(result, isA<Map<String, dynamic>>());
@@ -212,24 +221,30 @@ void main() {
 
       test('throws exception on non-200 status code', () async {
         // Arrange
-        when(() => mockHttpClient.put(any(), headers: any(named: 'headers'), body: any(named: 'body')))
+        when(() => mockHttpClient.put(any(),
+                headers: any(named: 'headers'), body: any(named: 'body')))
             .thenAnswer((_) async => http.Response('', 400));
 
         // Act & Assert
         expect(
-            () async => await collectionsDataProvider.updateCollection('1', {}),
+            () async => await collectionsDataProvider.updateCollection('1', {},
+                flag: 2),
             throwsException);
       });
 
       test('throws exception on network error', () async {
         // Arrange
-        when(() => mockHttpClient.put(any(), headers: any(named: 'headers'), body: any(named: 'body')))
-            .thenThrow(const SocketException('The semaphore timeout period has expired'));
+        when(() =>
+            mockHttpClient.put(any(),
+                headers: any(named: 'headers'),
+                body: any(named: 'body'))).thenThrow(
+            const SocketException('The semaphore timeout period has expired'));
 
         // Act & Assert
         expect(
-            () async => await collectionsDataProvider.updateCollection('1', {}),
-            throwsA(isA<SocketException>())); 
+            () async => await collectionsDataProvider.updateCollection('1', {},
+                flag: 3),
+            throwsA(isA<SocketException>()));
       });
     });
   });

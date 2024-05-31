@@ -10,8 +10,6 @@ sealed class GamesState extends Equatable {
 
 final class GamesInitial extends GamesState {}
 
-
-
 final class GamesLoading extends GamesState {}
 
 final class GamesLoaded extends GamesState {
@@ -62,4 +60,3 @@ final class GameFromCollectionRemoveSuccess extends GamesState {
 
   GameFromCollectionRemoveSuccess(this.title);
 }
-

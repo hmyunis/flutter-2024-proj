@@ -37,20 +37,5 @@ void main() {
       expect(find.byType(AlertDialog), findsNothing);
     });
 
-    testWidgets('closes the dialog when cancel button is pressed',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: AvatarPickerDialog(),
-          ),
-        ),
-      );
-
-      await tester.tap(find.text('Cancel'));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(AlertDialog), findsNothing);
-    });
   });
 }

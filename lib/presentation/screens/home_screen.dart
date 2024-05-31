@@ -143,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : Colors.transparent,
               ),
               BottomNavigationBarItem(
+                key: const Key("profile_icon"),
                 icon: const Icon(Icons.person_rounded),
                 label: 'Profile',
                 backgroundColor: _selectedIndex == 2
